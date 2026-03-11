@@ -1,9 +1,14 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
 
-const faqs = [
+interface FAQItem {
+    question: string;
+    answer: string;
+}
+
+const fallbackFAQs: FAQItem[] = [
     {
         question: 'Qual o prazo médio de entrega e instalação?',
         answer:
@@ -38,6 +43,22 @@ const faqs = [
 
 export default function FAQ() {
     const [openIndex, setOpenIndex] = useState<number | null>(null);
+    const [faqs, setFaqs] = useState<FAQItem[]>(fallbackFAQs);
+
+    useEffect(() => {
+        async function loadFAQs() {
+            try {
+                const { getFAQs } = await import('@/lib/firebaseAdmin');
+                const data = await getFAQs();
+                if (data.length > 0) {
+                    setFaqs(data);
+                }
+            } catch (error) {
+                console.error('Error loading FAQs from Firestore:', error);
+            }
+        }
+        loadFAQs();
+    }, []);
 
     const toggleFAQ = (index: number) => {
         setOpenIndex(openIndex === index ? null : index);
@@ -80,8 +101,8 @@ export default function FAQ() {
 
                             <div
                                 className={`transition-all duration-300 ease-in-out ${openIndex === index
-                                        ? 'max-h-96 opacity-100'
-                                        : 'max-h-0 opacity-0'
+                                    ? 'max-h-96 opacity-100'
+                                    : 'max-h-0 opacity-0'
                                     } overflow-hidden`}
                             >
                                 <div className="px-5 sm:px-6 pb-5 text-gray-600 text-sm sm:text-base leading-relaxed border-t border-gray-100 pt-4">
