@@ -1,0 +1,30 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Public read access for all collections
+    match /{document=**} {
+      allow read: if true;
+    }
+    
+    // Services collection
+    match /services/{serviceId} {
+      allow write: if request.auth != null;
+    }
+    
+    // Testimonials collection
+    match /testimonials/{testimonialId} {
+      allow write: if request.auth != null;
+    }
+    
+    // FAQs collection
+    match /faqs/{faqId} {
+      allow write: if request.auth != null;
+    }
+    
+    // Site settings (WhatsApp, social links, about text, footer text)
+    match /settings/{settingId} {
+      allow write: if request.auth != null;
+    }
+  }
+}
