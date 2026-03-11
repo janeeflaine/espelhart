@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { Menu, X, MessageCircle } from 'lucide-react';
+import { useSettings, getWhatsAppUrl } from '@/lib/SettingsContext';
 
 const navLinks = [
     { href: '/#inicio', label: 'Início' },
@@ -16,6 +17,9 @@ const navLinks = [
 export default function Header() {
     const [mobileOpen, setMobileOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
+
+    const settings = useSettings();
+    const whatsappUrl = getWhatsAppUrl(settings.whatsappNumber, 'Olá! Gostaria de solicitar um orçamento.');
 
     useEffect(() => {
         const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -72,7 +76,7 @@ export default function Header() {
 
                 {/* Desktop CTA */}
                 <a
-                    href="https://wa.me/5500000000000?text=Olá!%20Gostaria%20de%20solicitar%20um%20orçamento."
+                    href={whatsappUrl}
                     target="_blank"
                     rel="noopener noreferrer"
                     className="hidden md:inline-flex items-center gap-2 bg-whatsapp hover:bg-whatsapp-hover text-white px-5 py-2.5 rounded-lg font-semibold text-sm transition-all hover:shadow-lg hover:shadow-green-500/25"
@@ -122,7 +126,7 @@ export default function Header() {
 
                         <div className="mt-4 pt-4 border-t border-white/10">
                             <a
-                                href="https://wa.me/5500000000000?text=Olá!%20Gostaria%20de%20solicitar%20um%20orçamento."
+                                href={whatsappUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 onClick={() => setMobileOpen(false)}

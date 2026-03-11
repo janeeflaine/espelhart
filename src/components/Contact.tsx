@@ -1,6 +1,12 @@
+'use client';
+
 import { MessageCircle, Phone, MapPin, Mail, ArrowRight } from 'lucide-react';
+import { useSettings, getWhatsAppUrl } from '@/lib/SettingsContext';
 
 export default function Contact() {
+    const settings = useSettings();
+    const whatsappUrl = getWhatsAppUrl(settings.whatsappNumber, 'Olá! Vim pelo site e gostaria de solicitar um orçamento para meu projeto de vidraçaria.');
+
     return (
         <section id="contato" className="py-16 sm:py-20 lg:py-24 bg-espelhart-surface">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
@@ -24,7 +30,7 @@ export default function Contact() {
 
                             {/* Primary WhatsApp CTA */}
                             <a
-                                href="https://wa.me/5500000000000?text=Olá!%20Vim%20pelo%20site%20e%20gostaria%20de%20solicitar%20um%20orçamento%20para%20meu%20projeto%20de%20vidraçaria."
+                                href={whatsappUrl}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="group inline-flex items-center justify-center gap-3 bg-whatsapp hover:bg-whatsapp-hover text-white px-8 sm:px-10 py-5 rounded-2xl font-bold text-lg sm:text-xl shadow-lg shadow-green-500/25 transition-all hover:scale-105 hover:shadow-xl hover:shadow-green-500/30 w-full sm:w-auto"
@@ -36,11 +42,11 @@ export default function Contact() {
 
                             {/* Secondary: Call */}
                             <a
-                                href="tel:+5500000000000"
+                                href={`tel:+${settings.whatsappNumber}`}
                                 className="mt-4 inline-flex items-center justify-center gap-2 text-gray-400 hover:text-white border border-white/20 hover:border-white/40 px-6 py-3 rounded-xl font-medium transition-all hover:bg-white/5 w-full sm:w-auto text-sm"
                             >
                                 <Phone className="w-4 h-4" />
-                                Prefere ligar? (00) 0000-0000
+                                Prefere ligar? {settings.phone}
                             </a>
                         </div>
 
@@ -57,7 +63,7 @@ export default function Contact() {
                                     </div>
                                     <div>
                                         <p className="text-sm text-gray-400 mb-1">Telefone / WhatsApp</p>
-                                        <p className="text-white font-medium">(00) 0000-0000</p>
+                                        <p className="text-white font-medium">{settings.phone}</p>
                                     </div>
                                 </div>
 
@@ -67,7 +73,7 @@ export default function Contact() {
                                     </div>
                                     <div>
                                         <p className="text-sm text-gray-400 mb-1">E-mail</p>
-                                        <p className="text-white font-medium">contato@espelhart.com.br</p>
+                                        <p className="text-white font-medium">{settings.email}</p>
                                     </div>
                                 </div>
 
@@ -77,11 +83,7 @@ export default function Contact() {
                                     </div>
                                     <div>
                                         <p className="text-sm text-gray-400 mb-1">Endereço</p>
-                                        <p className="text-white font-medium">
-                                            Av. Industrial, 1234
-                                            <br />
-                                            Bairro Novo — São Paulo, SP
-                                        </p>
+                                        <p className="text-white font-medium">{settings.address}</p>
                                     </div>
                                 </div>
                             </div>

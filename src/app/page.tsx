@@ -1,3 +1,6 @@
+'use client';
+
+import { SettingsProvider } from '@/lib/SettingsContext';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
 import ServicesGrid from '@/components/ServicesGrid';
@@ -11,7 +14,7 @@ import FloatingWhatsApp from '@/components/FloatingWhatsApp';
 
 export default function Home() {
   return (
-    <>
+    <SettingsProvider>
       <Header />
       <main>
         <Hero />
@@ -24,6 +27,6 @@ export default function Home() {
       </main>
       <Footer />
       <FloatingWhatsApp />
-    </>
+    </SettingsProvider>
   );
 }

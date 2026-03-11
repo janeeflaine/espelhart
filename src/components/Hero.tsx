@@ -1,6 +1,12 @@
+'use client';
+
 import { MessageCircle, ArrowDown } from 'lucide-react';
+import { useSettings, getWhatsAppUrl } from '@/lib/SettingsContext';
 
 export default function Hero() {
+    const settings = useSettings();
+    const whatsappUrl = getWhatsAppUrl(settings.whatsappNumber, 'Olá! Gostaria de solicitar um orçamento para meu projeto.');
+
     return (
         <section
             id="inicio"
@@ -43,7 +49,7 @@ export default function Hero() {
                 {/* CTA Buttons */}
                 <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                     <a
-                        href="https://wa.me/5500000000000?text=Olá!%20Gostaria%20de%20solicitar%20um%20orçamento%20para%20meu%20projeto."
+                        href={whatsappUrl}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="group flex items-center gap-3 bg-whatsapp hover:bg-whatsapp-hover text-white text-lg px-8 sm:px-10 py-4 rounded-full font-bold shadow-lg shadow-green-500/25 transition-all hover:scale-105 hover:shadow-xl hover:shadow-green-500/30 w-full sm:w-auto justify-center"
@@ -53,7 +59,7 @@ export default function Hero() {
                     </a>
 
                     <a
-                        href="#servicos"
+                        href="/#servicos"
                         className="flex items-center gap-2 text-white/80 hover:text-white border border-white/30 hover:border-white/60 px-8 py-4 rounded-full font-medium transition-all hover:bg-white/5 w-full sm:w-auto justify-center"
                     >
                         Conheça Nossos Serviços
@@ -63,20 +69,17 @@ export default function Hero() {
 
                 {/* Stats Bar */}
                 <div className="mt-16 sm:mt-20 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12">
-                    <div className="text-center">
-                        <span className="block text-3xl sm:text-4xl font-bold text-espelhart-accent">10+</span>
-                        <span className="text-sm text-gray-400">Anos de Mercado</span>
-                    </div>
-                    <div className="hidden sm:block w-px h-12 bg-white/20" />
-                    <div className="text-center">
-                        <span className="block text-3xl sm:text-4xl font-bold text-espelhart-accent">1500+</span>
-                        <span className="text-sm text-gray-400">Projetos Entregues</span>
-                    </div>
-                    <div className="hidden sm:block w-px h-12 bg-white/20" />
-                    <div className="text-center">
-                        <span className="block text-3xl sm:text-4xl font-bold text-espelhart-accent">100%</span>
-                        <span className="text-sm text-gray-400">Satisfação Garantida</span>
-                    </div>
+                    {(settings.aboutStats || [
+                        { value: '10+', label: 'Anos de Mercado' },
+                        { value: '1500+', label: 'Projetos Entregues' },
+                        { value: '100%', label: 'Satisfação Garantida' },
+                    ]).map((stat, i) => (
+                        <div key={i} className="text-center">
+                            {i > 0 && <div className="hidden sm:block w-px h-12 bg-white/20 absolute -left-6" />}
+                            <span className="block text-3xl sm:text-4xl font-bold text-espelhart-accent">{stat.value}</span>
+                            <span className="text-sm text-gray-400">{stat.label}</span>
+                        </div>
+                    ))}
                 </div>
             </div>
         </section>
