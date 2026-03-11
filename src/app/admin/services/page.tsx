@@ -105,17 +105,34 @@ export default function AdminServicesPage() {
 
             // Upload main image if new
             if (mainImageFile) {
-                mainImageUrl = await uploadImage(
-                    mainImageFile,
-                    `services/${Date.now()}_main_${mainImageFile.name}`
-                );
+                try {
+                    mainImageUrl = await uploadImage(
+                        mainImageFile,
+                        `services/${Date.now()}_main_${mainImageFile.name}`
+                    );
+                } catch (uploadError) {
+                    console.error('Main image upload failed:', uploadError);
+                    const proceed = confirm(
+                        'Falha no upload da imagem principal. Firebase Storage pode não estar ativado.\n\nDeseja salvar o serviço sem a imagem?'
+                    );
+                    if (!proceed) {
+                        setSaving(false);
+                        return;
+                    }
+                    mainImageUrl = '';
+                }
             }
 
             // Upload new gallery images
             let galleryUrls = [...existingGallery];
             if (galleryFiles.length > 0) {
-                const newUrls = await uploadGalleryImages(galleryFiles, editingId || 'new');
-                galleryUrls = [...galleryUrls, ...newUrls];
+                try {
+                    const newUrls = await uploadGalleryImages(galleryFiles, editingId || 'new');
+                    galleryUrls = [...galleryUrls, ...newUrls];
+                } catch (uploadError) {
+                    console.error('Gallery upload failed:', uploadError);
+                    alert('Falha no upload da galeria. Firebase Storage pode não estar ativado. O serviço será salvo sem as novas imagens da galeria.');
+                }
             }
 
             const serviceData = {
@@ -137,7 +154,7 @@ export default function AdminServicesPage() {
             await fetchServices();
         } catch (error) {
             console.error('Error saving service:', error);
-            alert('Erro ao salvar serviço. Tente novamente.');
+            alert('Erro ao salvar serviço. Verifique o console para detalhes.');
         } finally {
             setSaving(false);
         }
