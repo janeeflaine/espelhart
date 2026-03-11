@@ -23,8 +23,21 @@ export default function AdminLoginPage() {
             const { auth } = await import('@/lib/firebase');
             await signInWithEmailAndPassword(auth, email, password);
             router.push('/admin');
-        } catch {
-            setError('Credenciais inválidas. Verifique seu email e senha.');
+        } catch (err: unknown) {
+            const firebaseError = err as { code?: string; message?: string };
+            const code = firebaseError.code || '';
+
+            if (code === 'auth/user-not-found' || code === 'auth/invalid-credential') {
+                setError('Usuário não encontrado. Verifique o email ou crie um usuário no Firebase Console.');
+            } else if (code === 'auth/wrong-password') {
+                setError('Senha incorreta. Tente novamente.');
+            } else if (code === 'auth/invalid-email') {
+                setError('Email inválido.');
+            } else if (code === 'auth/too-many-requests') {
+                setError('Muitas tentativas. Aguarde alguns minutos.');
+            } else {
+                setError(`Erro: ${code || firebaseError.message || 'desconhecido'}`);
+            }
         } finally {
             setLoading(false);
         }
