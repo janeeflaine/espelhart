@@ -31,30 +31,49 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     const router = useRouter();
     const pathname = usePathname();
 
+    const isLoginPage = pathname === '/admin/login';
+
     useEffect(() => {
+        // Skip auth check entirely on login page
+        if (isLoginPage) {
+            setLoading(false);
+            return;
+        }
+
         let unsubscribe: (() => void) | undefined;
 
         async function initAuth() {
-            const { onAuthStateChanged } = await import('firebase/auth');
-            const { auth } = await import('@/lib/firebase');
-            unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-                setUser(currentUser);
-                setLoading(false);
+            try {
+                const { onAuthStateChanged } = await import('firebase/auth');
+                const { auth } = await import('@/lib/firebase');
+                unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+                    setUser(currentUser);
+                    setLoading(false);
 
-                if (!currentUser && pathname !== '/admin/login') {
-                    router.push('/admin/login');
-                }
-            });
+                    if (!currentUser) {
+                        router.push('/admin/login');
+                    }
+                });
+            } catch (error) {
+                console.error('Firebase Auth initialization failed:', error);
+                setLoading(false);
+                router.push('/admin/login');
+            }
         }
         initAuth();
 
         return () => { if (unsubscribe) unsubscribe(); };
-    }, [router, pathname]);
+    }, [router, isLoginPage]);
 
     // Close sidebar on route change
     useEffect(() => {
         setSidebarOpen(false);
     }, [pathname]);
+
+    // Login page - render immediately without auth wrapper
+    if (isLoginPage) {
+        return <>{children}</>;
+    }
 
     if (loading) {
         return (
@@ -62,11 +81,6 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
                 <div className="w-8 h-8 border-4 border-espelhart-accent border-t-transparent rounded-full animate-spin" />
             </div>
         );
-    }
-
-    // Login page - no layout wrapper
-    if (pathname === '/admin/login') {
-        return <>{children}</>;
     }
 
     // Auth guard
