@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { Star } from 'lucide-react';
+import { getTestimonials } from '@/lib/firebaseAdmin';
 
 interface TestimonialItem {
     name: string;
@@ -65,7 +66,6 @@ export default function Testimonials() {
     useEffect(() => {
         async function loadTestimonials() {
             try {
-                const { getTestimonials } = await import('@/lib/firebaseAdmin');
                 const data = await getTestimonials();
                 if (data.length > 0) {
                     setTestimonials(data);

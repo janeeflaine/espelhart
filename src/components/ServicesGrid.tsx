@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react';
 import { ShowerHead, DoorOpen, Fence, Layers, Sparkles, ArrowRight } from 'lucide-react';
 import type { Service } from '@/lib/firebaseAdmin';
+import { getServices } from '@/lib/firebaseAdmin';
 
 const fallbackServices = [
     {
@@ -65,7 +66,6 @@ export default function ServicesGrid() {
     useEffect(() => {
         async function loadServices() {
             try {
-                const { getServices } = await import('@/lib/firebaseAdmin');
                 const data = await getServices();
                 if (data.length > 0) {
                     setServices(data);

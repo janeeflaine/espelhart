@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { ChevronDown } from 'lucide-react';
+import { getFAQs } from '@/lib/firebaseAdmin';
 
 interface FAQItem {
     question: string;

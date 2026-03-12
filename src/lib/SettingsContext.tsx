@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { getSettings } from '@/lib/firebaseAdmin';
 
 export interface SiteSettings {
     whatsappNumber: string;
@@ -46,8 +47,8 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
     useEffect(() => {
         async function loadSettings() {
             try {
-                const { getSettings } = await import('@/lib/firebaseAdmin');
                 const data = await getSettings();
+                console.log("Settings loaded from Firestore:", data);
                 if (data) {
                     setSettings({ ...defaultSettings, ...data });
                 }
