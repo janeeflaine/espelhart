@@ -14,7 +14,7 @@ import FloatingWhatsApp from '@/components/FloatingWhatsApp';
 
 export default function Home() {
   return (
-    <SettingsProvider>
+    <>
       <Header />
       <main>
         <Hero />
@@ -27,6 +27,6 @@ export default function Home() {
       </main>
       <Footer />
       <FloatingWhatsApp />
-    </SettingsProvider>
+    </>
   );
 }
