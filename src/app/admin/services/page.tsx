@@ -353,18 +353,18 @@ export default function AdminServicesPage() {
                             </div>
 
                             {/* Actions */}
-                            <div className="flex gap-3 pt-4">
+                            <div className="flex flex-col sm:flex-row gap-3 pt-4">
                                 <button
                                     type="submit"
                                     disabled={saving}
-                                    className="flex-1 bg-espelhart-accent hover:bg-espelhart-medium text-white py-3 rounded-xl font-semibold transition-colors disabled:opacity-50"
+                                    className="w-full sm:flex-1 bg-espelhart-accent hover:bg-espelhart-medium text-white py-3 rounded-xl font-semibold transition-colors disabled:opacity-50 order-1 sm:order-2"
                                 >
                                     {saving ? 'Salvando...' : editingId ? 'Salvar Alterações' : 'Criar Serviço'}
                                 </button>
                                 <button
                                     type="button"
                                     onClick={resetForm}
-                                    className="px-6 py-3 border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors font-medium"
+                                    className="w-full sm:px-6 py-3 border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors font-medium order-2 sm:order-1"
                                 >
                                     Cancelar
                                 </button>

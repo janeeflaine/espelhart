@@ -116,17 +116,17 @@ export default function AdminHeroPage() {
                 </div>
 
                 {/* Save Button */}
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col sm:flex-row items-center gap-4">
                     <button
                         type="submit"
                         disabled={saving}
-                        className="flex items-center gap-2 bg-espelhart-accent hover:bg-espelhart-medium text-white px-8 py-3 rounded-xl font-semibold transition-colors disabled:opacity-50"
+                        className="w-full sm:w-auto flex items-center justify-center gap-2 bg-espelhart-accent hover:bg-espelhart-medium text-white px-8 py-3 rounded-xl font-semibold transition-colors disabled:opacity-50"
                     >
                         <Save className="w-4 h-4" />
                         {saving ? 'Salvando...' : 'Salvar Alterações'}
                     </button>
                     {saved && (
-                        <span className="flex items-center gap-2 text-green-600 text-sm font-medium">
+                        <span className="flex items-center gap-2 text-green-600 text-sm font-medium animate-in fade-in slide-in-from-left-2">
                             <CheckCircle className="w-4 h-4" />
                             Salvo com sucesso!
                         </span>

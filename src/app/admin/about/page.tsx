@@ -124,8 +124,8 @@ export default function AdminAboutPage() {
                     </div>
                     <div className="space-y-4">
                         {settings.aboutStats.map((stat, i) => (
-                            <div key={i} className="flex gap-4 items-end">
-                                <div className="flex-1">
+                            <div key={i} className="flex flex-col sm:flex-row gap-4 items-start sm:items-end">
+                                <div className="w-full sm:flex-1">
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Valor</label>
                                     <input
                                         type="text"
@@ -135,7 +135,7 @@ export default function AdminAboutPage() {
                                         placeholder="Ex: 10+"
                                     />
                                 </div>
-                                <div className="flex-[2]">
+                                <div className="w-full sm:flex-[2]">
                                     <label className="block text-sm font-medium text-gray-700 mb-1">Rótulo / Significado</label>
                                     <input
                                         type="text"
@@ -178,11 +178,11 @@ export default function AdminAboutPage() {
                 </div>
 
                 {/* Save Button */}
-                <div className="flex items-center gap-4">
+                <div className="flex flex-col sm:flex-row items-center gap-4">
                     <button
                         type="submit"
                         disabled={saving}
-                        className="flex items-center gap-2 bg-espelhart-accent hover:bg-espelhart-medium text-white px-8 py-3 rounded-xl font-semibold transition-colors disabled:opacity-50"
+                        className="w-full sm:w-auto flex items-center justify-center gap-2 bg-espelhart-accent hover:bg-espelhart-medium text-white px-8 py-3 rounded-xl font-semibold transition-colors disabled:opacity-50"
                     >
                         <Save className="w-4 h-4" />
                         {saving ? 'Salvando...' : 'Salvar Alterações'}
