@@ -3,7 +3,8 @@ import { Metadata } from 'next';
 import Header from '@/components/Header';
 import Footer from '@/components/Footer';
 import FloatingWhatsApp from '@/components/FloatingWhatsApp';
-import { Clock, CheckCircle, Shield, Cookie, Mail, HelpCircle, ArrowLeft } from 'lucide-react';
+import { Clock, CheckCircle, ArrowLeft } from 'lucide-react';
+import { LegalEmailText, LegalCTA } from '@/components/LegalDynamicContent';
 
 export const metadata: Metadata = {
     title: 'Política de Privacidade | Espelhart Vidros e Esquadrias',
@@ -142,36 +143,12 @@ export default function PrivacyPolicyPage() {
                                     De acordo com a LGPD, você tem o direito de: acessar seus dados pessoais; solicitar a correção de dados
                                     incompletos, inexatos ou desatualizados; solicitar a eliminação de dados pessoais; revogar o consentimento a
                                     qualquer momento. Para exercer seus direitos, entre em contato conosco pelo e-mail
-                                    <strong> contato@espelhart.com.br</strong>.
+                                    <LegalEmailText />.
                                 </p>
                             </div>
 
                             {/* CTA */}
-                            <div className="p-8 sm:p-10 bg-espelhart-medium rounded-2xl text-white text-center">
-                                <HelpCircle className="w-12 h-12 text-espelhart-accent mx-auto mb-4" />
-                                <h2 className="text-2xl sm:text-3xl font-bold mb-4">Dúvidas ou Contato?</h2>
-                                <p className="text-gray-300 mb-8 max-w-lg mx-auto text-sm sm:text-base">
-                                    Se você tiver qualquer dúvida sobre nossa política de privacidade ou como seus dados são tratados, entre em
-                                    contato com nossa equipe.
-                                </p>
-                                <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                                    <a
-                                        href="mailto:contato@espelhart.com.br"
-                                        className="inline-flex items-center justify-center gap-2 bg-espelhart-accent hover:bg-espelhart-accent/90 px-8 py-3 rounded-xl font-bold transition-all"
-                                    >
-                                        <Mail className="w-4 h-4" />
-                                        Enviar E-mail
-                                    </a>
-                                    <a
-                                        href="https://wa.me/5500000000000?text=Olá!%20Tenho%20uma%20dúvida%20sobre%20a%20política%20de%20privacidade."
-                                        target="_blank"
-                                        rel="noopener noreferrer"
-                                        className="inline-flex items-center justify-center gap-2 bg-white/10 hover:bg-white/20 border border-white/20 px-8 py-3 rounded-xl font-bold transition-all"
-                                    >
-                                        Falar no WhatsApp
-                                    </a>
-                                </div>
-                            </div>
+                            <LegalCTA />
                         </div>
                     </div>
                 </section>
