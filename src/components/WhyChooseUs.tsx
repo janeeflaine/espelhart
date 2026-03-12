@@ -16,14 +16,14 @@ export default function WhyChooseUs() {
         ];
 
     return (
-        <section className="py-16 sm:py-20 lg:py-24 bg-espelhart-surface">
+        <section className="py-16 sm:py-20 lg:py-24 bg-espelhart-surface overflow-hidden">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 {/* Section Header */}
                 <div className="text-center mb-12 sm:mb-16">
                     <span className="text-espelhart-accent font-semibold tracking-widest uppercase text-sm">
                         Diferenciais
                     </span>
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-espelhart-darkest mt-2 mb-4 whitespace-pre-line">
+                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-espelhart-darkest mt-2 mb-4 whitespace-pre-line break-words">
                         {settings.featuresTitle || 'Por que escolher a Espelhart?'}
                     </h2>
                     <div className="w-20 h-1 bg-espelhart-accent mx-auto rounded-full" />

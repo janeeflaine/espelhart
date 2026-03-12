@@ -34,47 +34,46 @@ export default function Hero() {
                 </div>
 
                 {/* Title */}
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 leading-tight tracking-tight whitespace-pre-line">
+                <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 leading-tight tracking-tight whitespace-pre-line break-words">
                     {settings.heroTitle || 'Vidros e Esquadrias\nde Alto Padrão'}
                 </h1>
 
                 {/* Subtitle */}
-                <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-10 max-w-3xl mx-auto text-gray-300 font-light leading-relaxed whitespace-pre-line">
+                <p className="text-sm sm:text-lg md:text-xl lg:text-2xl mb-10 max-w-3xl mx-auto text-gray-300 font-light leading-relaxed whitespace-pre-line break-words">
                     {settings.heroSubtitle || 'Transformamos seus projetos em realidade com qualidade premium, acabamento impecável e atendimento personalizado.'}
                 </p>
 
                 {/* CTA Buttons */}
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 px-2 sm:px-0">
                     <a
                         href={whatsappUrl}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="group flex items-center gap-3 bg-whatsapp hover:bg-whatsapp-hover text-white text-lg px-8 sm:px-10 py-4 rounded-full font-bold shadow-lg shadow-green-500/25 transition-all hover:scale-105 hover:shadow-xl hover:shadow-green-500/30 w-full sm:w-auto justify-center"
+                        className="group flex items-center gap-3 bg-whatsapp hover:bg-whatsapp-hover text-white text-base sm:text-lg px-6 sm:px-10 py-4 rounded-full font-bold shadow-lg shadow-green-500/25 transition-all hover:scale-105 hover:shadow-xl hover:shadow-green-500/30 w-full sm:w-auto justify-center"
                     >
-                        <MessageCircle className="w-6 h-6 group-hover:animate-bounce" />
-                        Falar com Especialista
+                        <MessageCircle className="w-6 h-6 group-hover:animate-bounce shrink-0" />
+                        <span className="truncate">Falar com Especialista</span>
                     </a>
 
                     <a
                         href="/#servicos"
-                        className="flex items-center gap-2 text-white/80 hover:text-white border border-white/30 hover:border-white/60 px-8 py-4 rounded-full font-medium transition-all hover:bg-white/5 w-full sm:w-auto justify-center"
+                        className="flex items-center gap-2 text-white/80 hover:text-white border border-white/30 hover:border-white/60 px-8 py-4 rounded-full font-medium transition-all hover:bg-white/5 w-full sm:w-auto justify-center text-sm sm:text-base"
                     >
                         Conheça Nossos Serviços
-                        <ArrowDown className="w-4 h-4" />
+                        <ArrowDown className="w-4 h-4 shrink-0 transition-transform group-hover:translate-y-1" />
                     </a>
                 </div>
 
                 {/* Stats Bar */}
-                <div className="mt-16 sm:mt-20 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-12">
+                <div className="mt-16 sm:mt-20 flex flex-wrap items-center justify-center gap-8 sm:gap-12 lg:gap-16">
                     {(settings.aboutStats || [
                         { value: '10+', label: 'Anos de Mercado' },
                         { value: '1500+', label: 'Projetos Entregues' },
                         { value: '100%', label: 'Satisfação Garantida' },
                     ]).map((stat, i) => (
-                        <div key={i} className="text-center">
-                            {i > 0 && <div className="hidden sm:block w-px h-12 bg-white/20 absolute -left-6" />}
-                            <span className="block text-3xl sm:text-4xl font-bold text-espelhart-accent">{stat.value}</span>
-                            <span className="text-sm text-gray-400">{stat.label}</span>
+                        <div key={i} className="text-center relative px-2">
+                            <span className="block text-2xl sm:text-4xl font-bold text-espelhart-accent">{stat.value}</span>
+                            <span className="text-xs text-gray-400 font-medium uppercase tracking-wider">{stat.label}</span>
                         </div>
                     ))}
                 </div>

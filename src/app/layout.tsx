@@ -170,9 +170,11 @@ export default function RootLayout({
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
         />
       </head>
-      <body className="font-sans antialiased">
+      <body className="font-sans antialiased overflow-x-hidden">
         <SettingsProvider>
-          {children}
+          <div className="relative min-h-screen flex flex-col overflow-x-hidden">
+            {children}
+          </div>
         </SettingsProvider>
       </body>
     </html>

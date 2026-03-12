@@ -8,17 +8,17 @@ export default function Contact() {
     const whatsappUrl = getWhatsAppUrl(settings.whatsappNumber, 'Olá! Vim pelo site e gostaria de solicitar um orçamento para meu projeto de vidraçaria.');
 
     return (
-        <section id="contato" className="py-16 sm:py-20 lg:py-24 bg-espelhart-surface">
+        <section id="contato" className="py-16 sm:py-20 lg:py-24 bg-espelhart-surface overflow-hidden">
             <div className="container mx-auto px-4 sm:px-6 lg:px-8">
                 {/* CTA Card */}
                 <div className="bg-gradient-to-br from-espelhart-darkest via-espelhart-dark to-espelhart-medium rounded-3xl overflow-hidden shadow-2xl">
                     <div className="flex flex-col lg:flex-row">
                         {/* Left: Main CTA */}
-                        <div className="lg:w-3/5 p-8 sm:p-12 lg:p-16 flex flex-col justify-center">
+                        <div className="lg:w-3/5 p-6 sm:p-12 lg:p-16 flex flex-col justify-center">
                             <span className="text-espelhart-accent font-semibold tracking-widest uppercase text-sm mb-2">
                                 Orçamento Gratuito
                             </span>
-                            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight">
+                            <h2 className="text-2xl sm:text-3xl md:text-4xl lg:text-5xl font-bold text-white mb-6 leading-tight break-words">
                                 Pronto para transformar
                                 <br />
                                 <span className="text-espelhart-accent">seu projeto?</span>
