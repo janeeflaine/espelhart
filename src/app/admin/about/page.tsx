@@ -96,7 +96,7 @@ export default function AdminAboutPage() {
                                 type="text"
                                 value={settings.aboutTitle}
                                 onChange={(e) => updateField('aboutTitle', e.target.value)}
-                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm"
+                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-base"
                             />
                         </div>
                         <div>
@@ -105,7 +105,7 @@ export default function AdminAboutPage() {
                                 value={settings.aboutText}
                                 onChange={(e) => updateField('aboutText', e.target.value)}
                                 rows={6}
-                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm resize-none"
+                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-base resize-none"
                             />
                         </div>
                     </div>
@@ -131,7 +131,7 @@ export default function AdminAboutPage() {
                                         type="text"
                                         value={stat.value}
                                         onChange={(e) => updateStat(i, 'value', e.target.value)}
-                                        className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm font-semibold text-espelhart-darkest"
+                                        className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-base font-semibold text-espelhart-darkest"
                                         placeholder="Ex: 10+"
                                     />
                                 </div>
@@ -141,7 +141,7 @@ export default function AdminAboutPage() {
                                         type="text"
                                         value={stat.label}
                                         onChange={(e) => updateStat(i, 'label', e.target.value)}
-                                        className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm text-gray-600"
+                                        className="w-full px-4 py-2 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-base text-gray-600"
                                         placeholder="Ex: Anos de Mercado"
                                     />
                                 </div>
@@ -169,7 +169,7 @@ export default function AdminAboutPage() {
                                     type="text"
                                     value={highlight}
                                     onChange={(e) => updateHighlight(i, e.target.value)}
-                                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm"
+                                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-base"
                                     placeholder="Ex: Certificação de Qualidade"
                                 />
                             </div>

@@ -85,7 +85,7 @@ export default function AdminSettingsPage() {
                                 value={settings.whatsappNumber}
                                 onChange={(e) => updateField('whatsappNumber', e.target.value)}
                                 placeholder="5511999999999"
-                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm"
+                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-base"
                             />
                         </div>
                         <div>
@@ -94,7 +94,7 @@ export default function AdminSettingsPage() {
                                 type="text"
                                 value={settings.phone}
                                 onChange={(e) => updateField('phone', e.target.value)}
-                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm"
+                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-base"
                             />
                         </div>
                         <div className="sm:col-span-2">
@@ -103,7 +103,7 @@ export default function AdminSettingsPage() {
                                 type="text"
                                 value={settings.whatsappMessage}
                                 onChange={(e) => updateField('whatsappMessage', e.target.value)}
-                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm"
+                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-base"
                             />
                         </div>
                         <div>
@@ -112,7 +112,7 @@ export default function AdminSettingsPage() {
                                 type="email"
                                 value={settings.email}
                                 onChange={(e) => updateField('email', e.target.value)}
-                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm"
+                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-base"
                             />
                         </div>
                         <div>
@@ -121,7 +121,7 @@ export default function AdminSettingsPage() {
                                 type="text"
                                 value={settings.address}
                                 onChange={(e) => updateField('address', e.target.value)}
-                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm"
+                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-base"
                             />
                         </div>
                     </div>
@@ -146,7 +146,7 @@ export default function AdminSettingsPage() {
                                 value={settings.instagram}
                                 onChange={(e) => updateField('instagram', e.target.value)}
                                 placeholder="https://instagram.com/espelhart"
-                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm"
+                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-base"
                             />
                         </div>
                         <div>
@@ -156,7 +156,7 @@ export default function AdminSettingsPage() {
                                 value={settings.facebook}
                                 onChange={(e) => updateField('facebook', e.target.value)}
                                 placeholder="https://facebook.com/espelhart"
-                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm"
+                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-base"
                             />
                         </div>
                     </div>
@@ -180,7 +180,7 @@ export default function AdminSettingsPage() {
                                 value={settings.footerText}
                                 onChange={(e) => updateField('footerText', e.target.value)}
                                 rows={3}
-                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm resize-none"
+                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-base resize-none"
                             />
                         </div>
                     </div>

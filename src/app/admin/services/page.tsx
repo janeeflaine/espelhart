@@ -219,7 +219,7 @@ export default function AdminServicesPage() {
                                     onChange={(e) => setTitle(e.target.value)}
                                     required
                                     placeholder="Ex: Box para Banheiro"
-                                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm"
+                                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-base"
                                 />
                             </div>
 
@@ -232,7 +232,7 @@ export default function AdminServicesPage() {
                                     required
                                     rows={4}
                                     placeholder="Descreva o serviço..."
-                                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm resize-none"
+                                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-base resize-none"
                                 />
                             </div>
 
@@ -335,7 +335,7 @@ export default function AdminServicesPage() {
                                         value={order}
                                         onChange={(e) => setOrder(Number(e.target.value))}
                                         min={0}
-                                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm"
+                                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-base"
                                     />
                                 </div>
                                 <div className="flex items-center gap-3 pt-6">

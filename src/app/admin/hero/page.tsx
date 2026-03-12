@@ -83,7 +83,7 @@ export default function AdminHeroPage() {
                                 type="text"
                                 value={settings.heroBadge}
                                 onChange={(e) => updateField('heroBadge', e.target.value)}
-                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm"
+                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-base"
                                 placeholder="Ex: Referência em Vidraçaria"
                             />
                         </div>
@@ -93,7 +93,7 @@ export default function AdminHeroPage() {
                                 value={settings.heroTitle}
                                 onChange={(e) => updateField('heroTitle', e.target.value)}
                                 rows={2}
-                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm resize-none"
+                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-base resize-none"
                                 placeholder="Titúlo que mais chama a atenção..."
                             />
                             <p className="text-xs text-gray-400 mt-1">Dica: use Enter para quebrar a linha e manter um visual elegante.</p>
@@ -104,7 +104,7 @@ export default function AdminHeroPage() {
                                 value={settings.heroSubtitle}
                                 onChange={(e) => updateField('heroSubtitle', e.target.value)}
                                 rows={3}
-                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm resize-none"
+                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-base resize-none"
                                 placeholder="Uma pequena explicação dos seus serviços..."
                             />
                         </div>

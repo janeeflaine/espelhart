@@ -90,7 +90,7 @@ export default function AdminFeaturesPage() {
                                 type="text"
                                 value={settings.featuresTitle}
                                 onChange={(e) => updateField('featuresTitle', e.target.value)}
-                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm font-bold"
+                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-base font-bold"
                             />
                         </div>
                         <div>
@@ -99,7 +99,7 @@ export default function AdminFeaturesPage() {
                                 value={settings.featuresSubtitle}
                                 onChange={(e) => updateField('featuresSubtitle', e.target.value)}
                                 rows={2}
-                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm resize-none"
+                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-base resize-none"
                             />
                         </div>
                     </div>
@@ -127,7 +127,7 @@ export default function AdminFeaturesPage() {
                                         type="text"
                                         value={feature.title}
                                         onChange={(e) => updateFeature(i, 'title', e.target.value)}
-                                        className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm font-semibold"
+                                        className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-base font-semibold"
                                     />
                                 </div>
                                 <div>
@@ -136,7 +136,7 @@ export default function AdminFeaturesPage() {
                                         value={feature.description}
                                         onChange={(e) => updateFeature(i, 'description', e.target.value)}
                                         rows={2}
-                                        className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm text-gray-700 resize-none"
+                                        className="w-full px-4 py-2 border border-gray-200 rounded-lg focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-base text-gray-700 resize-none"
                                     />
                                 </div>
                             </div>
