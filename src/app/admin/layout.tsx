@@ -14,10 +14,16 @@ import {
     Menu,
     X,
     ChevronRight,
+    MonitorUp,
+    Users,
+    Award
 } from 'lucide-react';
 
 const sidebarLinks = [
     { href: '/admin', label: 'Dashboard', icon: LayoutDashboard },
+    { href: '/admin/hero', label: 'Topo do Site', icon: MonitorUp },
+    { href: '/admin/about', label: 'Quem Somos', icon: Users },
+    { href: '/admin/features', label: 'Diferenciais', icon: Award },
     { href: '/admin/services', label: 'Serviços', icon: Wrench },
     { href: '/admin/testimonials', label: 'Depoimentos', icon: MessageSquareQuote },
     { href: '/admin/faqs', label: 'FAQs', icon: HelpCircle },

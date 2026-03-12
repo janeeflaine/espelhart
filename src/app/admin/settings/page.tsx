@@ -5,25 +5,7 @@ import { getSettings, updateSettings, SiteSettings } from '@/lib/firebaseAdmin';
 import { doc, setDoc } from 'firebase/firestore';
 import { db } from '@/lib/firebase';
 import { Save, Phone, Globe, FileText, CheckCircle } from 'lucide-react';
-
-const defaultSettings: SiteSettings = {
-    whatsappNumber: '5500000000000',
-    whatsappMessage: 'Olá! Vim pelo site e gostaria de solicitar um orçamento para meu projeto de vidraçaria.',
-    instagram: 'https://instagram.com/espelhart',
-    facebook: 'https://facebook.com/espelhart',
-    aboutTitle: 'Expertise que atravessa gerações de transparência.',
-    aboutText:
-        'A Espelhart nasceu do desejo de oferecer soluções em vidros e esquadrias que unam o rigor técnico à estética arquitetônica.',
-    aboutStats: [
-        { label: 'Anos de Mercado', value: '10+' },
-        { label: 'Obras Entregues', value: '1500+' },
-    ],
-    footerText:
-        'Referência em vidraçaria e esquadrias de alumínio de alto padrão. Qualidade, transparência e durabilidade em cada detalhe.',
-    phone: '(00) 0000-0000',
-    email: 'contato@espelhart.com.br',
-    address: 'Av. Industrial, 1234, Bairro Novo — São Paulo, SP',
-};
+import { defaultSettings } from '@/lib/SettingsContext';
 
 export default function AdminSettingsPage() {
     const [settings, setSettings] = useState<SiteSettings>(defaultSettings);
@@ -180,38 +162,20 @@ export default function AdminSettingsPage() {
                     </div>
                 </div>
 
-                {/* Texts */}
+                {/* Textos Gerais */}
                 <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
                     <div className="flex items-center gap-3 mb-6">
                         <div className="w-10 h-10 bg-purple-100 rounded-xl flex items-center justify-center">
                             <FileText className="w-5 h-5 text-purple-600" />
                         </div>
                         <div>
-                            <h2 className="font-semibold text-espelhart-darkest">Textos do Site</h2>
-                            <p className="text-xs text-gray-400">Seções Sobre Nós e Rodapé</p>
+                            <h2 className="font-semibold text-espelhart-darkest">Textos Gerais</h2>
+                            <p className="text-xs text-gray-400">Mensagens fixas do site</p>
                         </div>
                     </div>
                     <div className="space-y-4">
                         <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Título Sobre Nós</label>
-                            <input
-                                type="text"
-                                value={settings.aboutTitle}
-                                onChange={(e) => updateField('aboutTitle', e.target.value)}
-                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Texto Sobre Nós</label>
-                            <textarea
-                                value={settings.aboutText}
-                                onChange={(e) => updateField('aboutText', e.target.value)}
-                                rows={4}
-                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm resize-none"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Texto do Rodapé</label>
+                            <label className="block text-sm font-medium text-gray-700 mb-1">Texto do Rodapé Central (Sobre a Empresa)</label>
                             <textarea
                                 value={settings.footerText}
                                 onChange={(e) => updateField('footerText', e.target.value)}

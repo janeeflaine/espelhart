@@ -60,14 +60,16 @@ export default function About() {
 
                         {/* Highlights */}
                         <div className="flex flex-col sm:flex-row gap-4">
-                            <div className="flex items-center gap-3 bg-espelhart-darkest text-white px-4 py-3 rounded-xl flex-1">
-                                <Award className="w-5 h-5 text-espelhart-accent shrink-0" />
-                                <span className="text-sm font-medium">Certificação de Qualidade</span>
-                            </div>
-                            <div className="flex items-center gap-3 bg-espelhart-darkest text-white px-4 py-3 rounded-xl flex-1">
-                                <Wrench className="w-5 h-5 text-espelhart-accent shrink-0" />
-                                <span className="text-sm font-medium">Garantia em Todos os Serviços</span>
-                            </div>
+                            {(settings.aboutHighlights || ['Certificação de Qualidade', 'Garantia em Todos os Serviços']).map((highlight, index) => (
+                                <div key={index} className="flex items-center gap-3 bg-espelhart-darkest text-white px-4 py-3 rounded-xl flex-1">
+                                    {index === 0 ? (
+                                        <Award className="w-5 h-5 text-espelhart-accent shrink-0" />
+                                    ) : (
+                                        <Wrench className="w-5 h-5 text-espelhart-accent shrink-0" />
+                                    )}
+                                    <span className="text-sm font-medium">{highlight}</span>
+                                </div>
+                            ))}
                         </div>
                     </div>
 

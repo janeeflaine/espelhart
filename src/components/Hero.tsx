@@ -29,21 +29,18 @@ export default function Hero() {
                 <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-5 py-2 mb-8">
                     <div className="w-2 h-2 bg-espelhart-accent rounded-full animate-pulse" />
                     <span className="text-sm font-medium text-espelhart-light">
-                        Referência em Vidraçaria de Alto Padrão
+                        {settings.heroBadge || 'Referência em Vidraçaria de Alto Padrão'}
                     </span>
                 </div>
 
                 {/* Title */}
-                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 leading-tight tracking-tight">
-                    Vidros e Esquadrias
-                    <br />
-                    <span className="text-espelhart-accent">de Alto Padrão</span>
+                <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 leading-tight tracking-tight whitespace-pre-line">
+                    {settings.heroTitle || 'Vidros e Esquadrias\nde Alto Padrão'}
                 </h1>
 
                 {/* Subtitle */}
-                <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-10 max-w-3xl mx-auto text-gray-300 font-light leading-relaxed">
-                    Transformamos seus projetos em realidade com qualidade premium,
-                    acabamento impecável e atendimento personalizado.
+                <p className="text-base sm:text-lg md:text-xl lg:text-2xl mb-10 max-w-3xl mx-auto text-gray-300 font-light leading-relaxed whitespace-pre-line">
+                    {settings.heroSubtitle || 'Transformamos seus projetos em realidade com qualidade premium, acabamento impecável e atendimento personalizado.'}
                 </p>
 
                 {/* CTA Buttons */}

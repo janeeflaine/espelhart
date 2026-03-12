@@ -11,13 +11,20 @@ export interface SiteSettings {
     aboutTitle: string;
     aboutText: string;
     aboutStats: { label: string; value: string }[];
+    aboutHighlights: string[];
     footerText: string;
     phone: string;
     email: string;
     address: string;
+    heroBadge: string;
+    heroTitle: string;
+    heroSubtitle: string;
+    featuresTitle: string;
+    featuresSubtitle: string;
+    features: { title: string; description: string }[];
 }
 
-const defaultSettings: SiteSettings = {
+export const defaultSettings: SiteSettings = {
     whatsappNumber: '5500000000000',
     whatsappMessage: 'Olá! Gostaria de solicitar um orçamento.',
     instagram: '',
@@ -29,10 +36,25 @@ const defaultSettings: SiteSettings = {
         { label: 'Obras Entregues', value: '1500+' },
         { label: 'Avaliação Google', value: '5★' },
     ],
+    aboutHighlights: [
+        'Certificação de Qualidade',
+        'Garantia em Todos os Serviços'
+    ],
     footerText: '© 2026 Espelhart. Todos os direitos reservados.',
     phone: '(00) 0000-0000',
     email: 'contato@espelhart.com.br',
     address: 'São Paulo, SP',
+    heroBadge: 'Referência em Vidraçaria de Alto Padrão',
+    heroTitle: 'Vidros e Esquadrias\nde Alto Padrão',
+    heroSubtitle: 'Transformamos seus projetos em realidade com qualidade premium, acabamento impecável e atendimento personalizado.',
+    featuresTitle: 'Por que escolher a Espelhart?',
+    featuresSubtitle: 'Combinamos técnica avançada e atendimento personalizado para garantir o sucesso da sua obra.',
+    features: [
+        { title: 'Equipe Especializada', description: 'Profissionais altamente treinados e certificados para instalações complexas de vidros e esquadrias.' },
+        { title: 'Alta Tecnologia', description: 'Utilizamos maquinário de ponta e materiais de última geração para corte e acabamento perfeitos.' },
+        { title: 'Prazos Rigorosos', description: 'Cronogramas respeitados do início ao fim, sem atrasos ou surpresas. Compromisso com sua obra.' },
+        { title: 'Garantia Estendida', description: 'Segurança total com suporte pós-venda e garantia de fabricação em todos os nossos produtos.' }
+    ]
 };
 
 const SettingsContext = createContext<SiteSettings>(defaultSettings);

@@ -59,10 +59,17 @@ export interface SiteSettings {
     aboutTitle: string;
     aboutText: string;
     aboutStats: { label: string; value: string }[];
+    aboutHighlights: string[];
     footerText: string;
     phone: string;
     email: string;
     address: string;
+    heroBadge: string;
+    heroTitle: string;
+    heroSubtitle: string;
+    featuresTitle: string;
+    featuresSubtitle: string;
+    features: { title: string; description: string }[];
 }
 
 // ==================== SERVICES ====================
