@@ -67,7 +67,6 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
   name: 'Espelhart Vidros e Esquadrias',
-  legalName: 'LUIZ FELIPE SOUZA 05403061185',
   taxID: '41.634.235/0001-12',
   image: 'https://espelhart.com/opengraph-image',
   '@id': 'https://espelhart.com',
