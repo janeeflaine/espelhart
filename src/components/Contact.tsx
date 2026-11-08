@@ -42,11 +42,11 @@ export default function Contact() {
 
                             {/* Secondary: Call */}
                             <a
-                                href={`tel:+${settings.whatsappNumber}`}
+                                href={`tel:+${settings.whatsappNumber || '556198179760'}`}
                                 className="mt-4 inline-flex items-center justify-center gap-2 text-gray-400 hover:text-white border border-white/20 hover:border-white/40 px-6 py-3 rounded-xl font-medium transition-all hover:bg-white/5 w-full sm:w-auto text-sm"
                             >
                                 <Phone className="w-4 h-4" />
-                                Prefere ligar? {settings.phone}
+                                Prefere ligar? {settings.phone || '(61) 9817-9760'}
                             </a>
                         </div>
 
@@ -63,7 +63,7 @@ export default function Contact() {
                                     </div>
                                     <div>
                                         <p className="text-sm text-gray-400 mb-1">Telefone / WhatsApp</p>
-                                        <p className="text-white font-medium">{settings.phone}</p>
+                                        <p className="text-white font-medium">{settings.phone || '(61) 9817-9760'}</p>
                                     </div>
                                 </div>
 

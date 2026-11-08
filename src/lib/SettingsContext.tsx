@@ -25,7 +25,7 @@ export interface SiteSettings {
 }
 
 export const defaultSettings: SiteSettings = {
-    whatsappNumber: '5500000000000',
+    whatsappNumber: '556198179760',
     whatsappMessage: 'Olá! Gostaria de solicitar um orçamento.',
     instagram: '',
     facebook: '',
@@ -41,7 +41,7 @@ export const defaultSettings: SiteSettings = {
         'Garantia em Todos os Serviços'
     ],
     footerText: '© 2026 Espelhart. Todos os direitos reservados.',
-    phone: '(00) 0000-0000',
+    phone: '(61) 9817-9760',
     email: 'contato@espelhart.com.br',
     address: 'São Paulo, SP',
     heroBadge: 'Referência em Vidraçaria de Alto Padrão',

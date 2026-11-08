@@ -84,7 +84,7 @@ export default function AdminSettingsPage() {
                                 type="text"
                                 value={settings.whatsappNumber}
                                 onChange={(e) => updateField('whatsappNumber', e.target.value)}
-                                placeholder="5511999999999"
+                                placeholder="556198179760"
                                 className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-base"
                             />
                         </div>

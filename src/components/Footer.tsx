@@ -93,12 +93,12 @@ export default function Footer() {
                                 'Espelhos Decorativos',
                             ].map((service) => (
                                 <li key={service}>
-                                    <a
+                                    <Link
                                         href="/#servicos"
                                         className="text-gray-400 hover:text-espelhart-accent transition-colors text-sm"
                                     >
                                         {service}
-                                    </a>
+                                    </Link>
                                 </li>
                             ))}
                         </ul>
@@ -110,7 +110,7 @@ export default function Footer() {
                         <ul className="space-y-4">
                             <li className="flex items-center gap-3">
                                 <Phone className="w-4 h-4 text-espelhart-accent shrink-0" />
-                                <span className="text-gray-400 text-sm">{settings.phone || '(00) 0000-0000'}</span>
+                                <span className="text-gray-400 text-sm">{settings.phone || '(61) 9817-9760'}</span>
                             </li>
                             <li className="flex items-center gap-3">
                                 <Mail className="w-4 h-4 text-espelhart-accent shrink-0" />

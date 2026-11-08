@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { ShowerHead, DoorOpen, Fence, Layers, Sparkles, ArrowRight } from 'lucide-react';
 import type { Service } from '@/lib/firebaseAdmin';
 import { getServices } from '@/lib/firebaseAdmin';
+import { useSettings, getWhatsAppUrl } from '@/lib/SettingsContext';
 
 const fallbackServices = [
     {
@@ -61,6 +62,7 @@ function getIcon(title: string) {
 }
 
 export default function ServicesGrid() {
+    const settings = useSettings();
     const [services, setServices] = useState<Service[]>(fallbackServices as Service[]);
 
     useEffect(() => {
@@ -153,7 +155,7 @@ export default function ServicesGrid() {
                                     </p>
 
                                     <a
-                                        href={`https://wa.me/5500000000000?text=Olá!%20Gostaria%20de%20saber%20mais%20sobre%20o%20serviço%20de%20${encodeURIComponent(service.title)}`}
+                                        href={getWhatsAppUrl(settings.whatsappNumber || '556198179760', `Olá! Gostaria de saber mais sobre o serviço de ${service.title}`)}
                                         target="_blank"
                                         rel="noopener noreferrer"
                                         className={`inline-flex items-center gap-2 font-semibold text-sm group/link transition-colors ${service.featured

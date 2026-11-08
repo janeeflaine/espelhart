@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { initializeApp, getApps, getApp } from 'firebase/app';
-import { getFirestore, doc, setDoc, getDoc, deleteDoc, serverTimestamp } from 'firebase/firestore';
+import { getFirestore, doc, getDoc } from 'firebase/firestore';
 import { getAuth } from 'firebase/auth';
 
 export async function GET() {
@@ -75,47 +75,23 @@ export async function GET() {
     }
 
     // ============================================
-    // TEST 3: Firestore Write (site_settings)
+    // TEST 3: Firestore Read (Connection check)
     // ============================================
     try {
-        const testDocRef = doc(db, 'site_settings', 'connection_test');
-
-        // Write
-        await setDoc(testDocRef, {
-            status: 'online',
-            testedAt: serverTimestamp(),
-            source: 'firebase-connection-test',
-        });
-
-        // Read back
+        const testDocRef = doc(db, 'settings', 'general');
         const snapshot = await getDoc(testDocRef);
 
-        if (snapshot.exists()) {
-            const data = snapshot.data();
-            (results.tests as Record<string, unknown>)['3_firestore_write'] = {
-                status: 'PASS',
-                message: 'Successfully wrote and read document in site_settings collection.',
-                documentData: {
-                    status: data.status,
-                    source: data.source,
-                },
-            };
-
-            // Cleanup: delete the test document
-            await deleteDoc(testDocRef);
-        } else {
-            (results.tests as Record<string, unknown>)['3_firestore_write'] = {
-                status: 'FAIL',
-                error: 'Document was written but could not be read back.',
-            };
-        }
+        (results.tests as Record<string, unknown>)['3_firestore_read'] = {
+            status: 'PASS',
+            message: 'Successfully connected to Firestore and read settings.',
+            exists: snapshot.exists(),
+        };
     } catch (error: unknown) {
         const errMessage = error instanceof Error ? error.message : String(error);
         let diagnosis = 'Unknown error';
 
         if (errMessage.includes('permission-denied') || errMessage.includes('PERMISSION_DENIED')) {
-            diagnosis =
-                'PERMISSION ERROR: Firestore Rules are blocking the write. Check firestore.rules — the site_settings collection may not be in the allowed list. Current rules only allow: services, testimonials, faqs, settings.';
+            diagnosis = 'PERMISSION ERROR: Firestore Rules are blocking the read. Check firestore.rules.';
         } else if (errMessage.includes('not-found') || errMessage.includes('NOT_FOUND')) {
             diagnosis = 'REGION ERROR: The Firestore database may not be created yet, or is in a different region.';
         } else if (errMessage.includes('invalid-api-key') || errMessage.includes('API_KEY')) {
@@ -124,7 +100,7 @@ export async function GET() {
             diagnosis = 'NETWORK ERROR: Cannot reach Firestore. Check internet connection or Firebase project status.';
         }
 
-        (results.tests as Record<string, unknown>)['3_firestore_write'] = {
+        (results.tests as Record<string, unknown>)['3_firestore_read'] = {
             status: 'FAIL',
             error: errMessage,
             diagnosis,

@@ -82,7 +82,7 @@ const jsonLd = {
   image: 'https://espelhart.com.br/og-image.jpg',
   '@id': 'https://espelhart.com.br',
   url: 'https://espelhart.com.br',
-  telephone: '+55-00-0000-0000',
+  telephone: '+55-61-9817-9760',
   description:
     'Vidraçaria de alto padrão especializada em box para banheiro, esquadrias de alumínio, guarda-corpo de vidro e vidros temperados em São Paulo.',
   address: {

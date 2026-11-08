@@ -112,7 +112,7 @@ export default function AdminHeroPage() {
                 </div>
 
                 <div className="flex flex-col gap-2 text-sm text-gray-500 bg-blue-50/50 p-4 border border-blue-100 rounded-xl">
-                    <p>💡 <b>Nota:</b> Os números informativos no fim desta seção do seu site são puxados diretamente dos "Números e Conquistas" na tela de <b>Quem Somos</b>. Você pode editá-los lá e irão atualizar aqui também.</p>
+                    <p>💡 <b>Nota:</b> Os números informativos no fim desta seção do seu site são puxados diretamente dos &quot;Números e Conquistas&quot; na tela de <b>Quem Somos</b>. Você pode editá-los lá e irão atualizar aqui também.</p>
                 </div>
 
                 {/* Save Button */}

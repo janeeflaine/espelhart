@@ -1,6 +1,7 @@
 'use client';
 
 import { MessageCircle, ArrowDown } from 'lucide-react';
+import Link from 'next/link';
 import { useSettings, getWhatsAppUrl } from '@/lib/SettingsContext';
 
 export default function Hero() {
@@ -55,13 +56,13 @@ export default function Hero() {
                         <span className="truncate">Falar com Especialista</span>
                     </a>
 
-                    <a
+                    <Link
                         href="/#servicos"
                         className="flex items-center gap-2 text-white/80 hover:text-white border border-white/30 hover:border-white/60 px-8 py-4 rounded-full font-medium transition-all hover:bg-white/5 w-full sm:w-auto justify-center text-sm sm:text-base"
                     >
                         Conheça Nossos Serviços
                         <ArrowDown className="w-4 h-4 shrink-0 transition-transform group-hover:translate-y-1" />
-                    </a>
+                    </Link>
                 </div>
 
                 {/* Stats Bar */}
