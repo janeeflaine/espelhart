@@ -7,6 +7,9 @@ import { getWhatsAppUrl, telHref } from '@/lib/SettingsContext';
 import WhatsAppIcon from '@/components/WhatsAppIcon';
 
 const FIELDS = [
+    'companyLegalName',
+    'cnpj',
+    'dpoName',
     'whatsappNumber',
     'whatsappMessage',
     'phone',
@@ -33,6 +36,35 @@ export default function AdminSettingsPage() {
                 siteAnchor="orcamento"
             />
             <div className="space-y-6 max-w-3xl">
+                <Panel
+                    title="Dados da empresa"
+                    description="Exigidos pela LGPD e pelo Código de Defesa do Consumidor. Aparecem no rodapé e nas páginas de Privacidade e Termos."
+                >
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                        <div className="sm:col-span-2">
+                            <TextInput
+                                label="Razão social"
+                                hint="Nome que está no cartão do CNPJ."
+                                value={values.companyLegalName}
+                                onChange={(v) => set('companyLegalName', v)}
+                            />
+                        </div>
+                        <TextInput
+                            label="CNPJ"
+                            value={values.cnpj}
+                            onChange={(v) => set('cnpj', v)}
+                            placeholder="00.000.000/0000-00"
+                            inputMode="numeric"
+                        />
+                        <TextInput
+                            label="Encarregado de dados (LGPD)"
+                            hint="Pessoa que responde pedidos sobre dados pessoais. Opcional para pequenas empresas."
+                            value={values.dpoName}
+                            onChange={(v) => set('dpoName', v)}
+                        />
+                    </div>
+                </Panel>
+
                 <Panel title="WhatsApp" description="Para onde vão os pedidos de orçamento.">
                     <div className="space-y-5">
                         <TextInput

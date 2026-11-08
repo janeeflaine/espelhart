@@ -1,10 +1,7 @@
+import type { Metadata } from 'next';
 import Link from 'next/link';
-import { Metadata } from 'next';
-import Header from '@/components/Header';
-import Footer from '@/components/Footer';
-import FloatingWhatsApp from '@/components/FloatingWhatsApp';
-import { Clock, ArrowLeft } from 'lucide-react';
-import { LegalCTA } from '@/components/LegalDynamicContent';
+import LegalPage, { LegalSection } from '@/components/LegalPage';
+import { CompanyIdentity } from '@/components/LegalDynamicContent';
 
 export const metadata: Metadata = {
     title: 'Termos de Uso | Espelhart Vidros e Esquadrias',
@@ -13,146 +10,146 @@ export const metadata: Metadata = {
     alternates: { canonical: '/termos-de-uso' },
 };
 
-export default function TermsOfUsePage() {
+const toc = [
+    { id: 'identificacao', label: 'Quem somos' },
+    { id: 'aceitacao', label: 'Aceitação' },
+    { id: 'servicos', label: 'Serviços' },
+    { id: 'orcamentos', label: 'Orçamentos e contratação' },
+    { id: 'garantia', label: 'Garantia' },
+    { id: 'uso', label: 'Uso do site' },
+    { id: 'propriedade', label: 'Propriedade intelectual' },
+    { id: 'responsabilidade', label: 'Responsabilidade' },
+    { id: 'privacidade', label: 'Privacidade' },
+    { id: 'foro', label: 'Lei aplicável e foro' },
+];
+
+export default function TermsPage() {
     return (
-        <>
-            <Header />
-            <main>
-                {/* Hero */}
-                <section className="relative py-16 sm:py-20 bg-espelhart-darkest overflow-hidden">
-                    <div className="absolute inset-0 opacity-10">
-                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_50%_50%,_#51A4B4_0%,_transparent_70%)]" />
-                    </div>
-                    <div className="relative container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-                        <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-white mb-6 tracking-tight">
-                            Termos de Uso
-                        </h1>
-                        <p className="text-espelhart-accent/80 max-w-2xl mx-auto text-base sm:text-lg md:text-xl font-medium">
-                            Conheça as condições de uso do nosso site e dos nossos serviços de vidraçaria e esquadrias.
-                        </p>
-                        <div className="mt-8 flex justify-center">
-                            <div className="flex items-center gap-2 text-espelhart-accent text-sm font-bold uppercase tracking-widest">
-                                <Clock className="w-4 h-4" />
-                                Última atualização: Março 2026
-                            </div>
-                        </div>
-                    </div>
-                </section>
+        <LegalPage
+            title="Termos de Uso"
+            intro="Condições para usar este site e contratar os serviços da Espelhart. Nada aqui reduz os direitos que você tem pelo Código de Defesa do Consumidor."
+            updated="8 de novembro de 2026"
+            toc={toc}
+        >
+            <LegalSection id="identificacao" title="1. Quem somos">
+                <CompanyIdentity />
+            </LegalSection>
 
-                {/* Content */}
-                <section className="py-12 sm:py-16 md:py-20">
-                    <div className="container mx-auto px-4 sm:px-6 lg:px-8 max-w-4xl">
-                        {/* Back link */}
-                        <Link
-                            href="/"
-                            className="inline-flex items-center gap-2 text-espelhart-accent hover:text-espelhart-medium text-sm font-medium mb-10 transition-colors"
-                        >
-                            <ArrowLeft className="w-4 h-4" />
-                            Voltar ao início
-                        </Link>
+            <LegalSection id="aceitacao" title="2. Aceitação">
+                <p>
+                    Ao usar este site, você concorda com estes Termos de Uso. Se não concordar com alguma condição, pedimos que não use
+                    o site. Podemos atualizar estes termos, e a data da última atualização fica sempre no topo da página.
+                </p>
+            </LegalSection>
 
-                        <div className="space-y-12">
-                            {/* 1. Aceitação */}
-                            <div>
-                                <div className="flex items-center gap-4 mb-4">
-                                    <div className="h-8 w-1 bg-espelhart-accent rounded-full" />
-                                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-espelhart-darkest">1. Aceitação dos Termos</h2>
-                                </div>
-                                <p className="text-gray-600 leading-relaxed">
-                                    Ao acessar e utilizar o site da Espelhart Vidros e Esquadrias, você concorda com os presentes Termos de Uso.
-                                    Caso não concorde com alguma disposição, solicitamos que não utilize nosso site. Estes termos podem ser
-                                    atualizados periodicamente, e é sua responsabilidade revisá-los.
-                                </p>
-                            </div>
+            <LegalSection id="servicos" title="3. Serviços">
+                <p>
+                    A Espelhart oferece serviços de vidraçaria e esquadrias, como box para banheiro, esquadrias de alumínio, portas,
+                    guarda-corpo, fachadas, vidros temperados e espelhos. As fotos e descrições do site ilustram trabalhos já feitos;
+                    cada projeto é definido no orçamento, conforme as medidas e especificações do local.
+                </p>
+            </LegalSection>
 
-                            {/* 2. Serviços */}
-                            <div>
-                                <div className="flex items-center gap-4 mb-4">
-                                    <div className="h-8 w-1 bg-espelhart-accent rounded-full" />
-                                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-espelhart-darkest">2. Descrição dos Serviços</h2>
-                                </div>
-                                <p className="text-gray-600 leading-relaxed">
-                                    A Espelhart oferece serviços de vidraçaria e esquadrias, incluindo, mas não limitado a: instalação de box
-                                    para banheiro, esquadrias de alumínio, guarda-corpo de vidro, vidros temperados e espelhos decorativos. Os
-                                    orçamentos são realizados sob demanda e os valores podem variar conforme especificações técnicas do projeto.
-                                </p>
-                            </div>
+            <LegalSection id="orcamentos" title="4. Orçamentos e contratação">
+                <p>
+                    O pedido de orçamento pelo site é gratuito e não gera nenhum compromisso de contratação. Os orçamentos têm validade
+                    de 15 (quinze) dias a partir da emissão, salvo indicação diferente no próprio orçamento. A contratação só se
+                    concretiza após a sua aprovação formal do orçamento e, quando combinado, o pagamento da entrada.
+                </p>
+                <p>
+                    Quando a contratação acontecer fora do nosso estabelecimento, por exemplo pelo WhatsApp ou telefone, ficam
+                    garantidos os direitos do art. 49 do Código de Defesa do Consumidor, inclusive o direito de arrependimento no prazo
+                    de 7 dias, nas hipóteses previstas em lei.
+                </p>
+            </LegalSection>
 
-                            {/* 3. Orçamentos */}
-                            <div className="p-6 sm:p-8 bg-espelhart-surface rounded-2xl border border-gray-100">
-                                <div className="flex items-center gap-4 mb-4">
-                                    <div className="h-8 w-1 bg-espelhart-accent rounded-full" />
-                                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-espelhart-darkest">3. Orçamentos e Contratação</h2>
-                                </div>
-                                <p className="text-gray-600 leading-relaxed">
-                                    Os orçamentos fornecidos pela Espelhart têm validade de 15 (quinze) dias a partir da data de emissão, salvo
-                                    indicação contrária. A contratação do serviço somente é efetivada após a aprovação formal do orçamento pelo
-                                    cliente e o pagamento da entrada, quando aplicável. Valores estão sujeitos a alteração sem aviso prévio
-                                    para novos orçamentos.
-                                </p>
-                            </div>
+            <LegalSection id="garantia" title="5. Garantia">
+                <p>
+                    <strong>Instalação e mão de obra: 1 (um) ano.</strong> Todo serviço executado pela Espelhart tem garantia
+                    contratual de 12 meses contra defeitos de instalação, contados da data de conclusão do serviço. Ela cobre, por
+                    exemplo, problemas de fixação, prumo e alinhamento, vedação e funcionamento de portas, janelas e box causados pela
+                    instalação.
+                </p>
+                <p>
+                    <strong>Materiais: garantia do fabricante.</strong> Vidros, perfis de alumínio, ferragens, fechaduras e acessórios
+                    têm a garantia dada pelos respectivos fabricantes, no prazo e nas condições informados por eles. Se um material
+                    apresentar defeito de fabricação, a Espelhart faz a avaliação e cuida do acionamento junto ao fabricante.
+                </p>
+                <p>
+                    <strong>Garantia legal.</strong> A garantia contratual é complementar à garantia legal prevista no Código de Defesa
+                    do Consumidor (arts. 26 e 50 da Lei nº 8.078/90) e não a substitui.
+                </p>
+                <p>
+                    <strong>O que a garantia não cobre:</strong>
+                </p>
+                <ul>
+                    <li>quebra ou trinca de vidro causada por impacto, batida, choque térmico ou acidente;</li>
+                    <li>uso inadequado, força excessiva ou uso diferente do previsto para o produto;</li>
+                    <li>consertos, ajustes ou modificações feitos por terceiros;</li>
+                    <li>
+                        falta de manutenção ou limpeza com produtos abrasivos, ácidos ou solventes que danifiquem vidros, perfis e
+                        borrachas;
+                    </li>
+                    <li>
+                        problemas da própria obra, como recalque, trincas na alvenaria, infiltração ou desnível surgidos depois da
+                        instalação;
+                    </li>
+                    <li>desgaste natural de peças de uso contínuo, como roldanas, escovas e vedações, após o período de garantia;</li>
+                    <li>eventos de força maior, como enchentes, vendavais e descargas elétricas.</li>
+                </ul>
+                <p>
+                    <strong>Como acionar.</strong> Fale conosco pelo WhatsApp ou e-mail com o nome do contratante, o endereço da obra
+                    e fotos ou vídeo do problema. Dentro da garantia, a visita técnica de avaliação não tem custo. Constatado defeito
+                    coberto, o reparo é feito sem custo, no prazo máximo de 30 dias, conforme o art. 18 do Código de Defesa do
+                    Consumidor.
+                </p>
+                <p>
+                    <strong>Cuidados recomendados:</strong> limpar vidros e perfis com pano macio, água e sabão neutro; manter trilhos
+                    limpos e livres de detritos; não forçar portas e janelas que estiverem travando, e nos chamar para ajuste.
+                </p>
+            </LegalSection>
 
-                            {/* 4. Garantia */}
-                            <div>
-                                <div className="flex items-center gap-4 mb-4">
-                                    <div className="h-8 w-1 bg-espelhart-accent rounded-full" />
-                                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-espelhart-darkest">4. Garantia dos Serviços</h2>
-                                </div>
-                                <p className="text-gray-600 leading-relaxed">
-                                    Todos os serviços executados pela Espelhart possuem garantia mínima de 12 (doze) meses para defeitos de
-                                    fabricação e instalação, conforme previsto no Código de Defesa do Consumidor (Lei nº 8.078/90). A garantia
-                                    não cobre danos causados por uso inadequado, acidentes, modificações realizadas por terceiros ou manutenção
-                                    imprópria.
-                                </p>
-                            </div>
+            <LegalSection id="uso" title="6. Uso do site">
+                <p>
+                    Você se compromete a usar o site de forma lícita, sem tentar acessar áreas restritas, interferir no seu
+                    funcionamento ou enviar informações falsas. O site tem links para serviços de terceiros, como WhatsApp e Instagram,
+                    que seguem os próprios termos e políticas.
+                </p>
+            </LegalSection>
 
-                            {/* 5. Propriedade Intelectual */}
-                            <div>
-                                <div className="flex items-center gap-4 mb-4">
-                                    <div className="h-8 w-1 bg-espelhart-accent rounded-full" />
-                                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-espelhart-darkest">5. Propriedade Intelectual</h2>
-                                </div>
-                                <p className="text-gray-600 leading-relaxed">
-                                    Todo o conteúdo do site — incluindo textos, imagens, logotipos, ícones e layout — é de propriedade
-                                    exclusiva da Espelhart ou de seus licenciadores e está protegido pelas leis de direitos autorais e propriedade
-                                    intelectual. É proibida a reprodução, distribuição ou uso não autorizado de qualquer material deste site.
-                                </p>
-                            </div>
+            <LegalSection id="propriedade" title="7. Propriedade intelectual">
+                <p>
+                    Textos, fotos de obras, logotipo e layout do site pertencem à Espelhart ou a quem nos licenciou o uso, e são
+                    protegidos pela Lei de Direitos Autorais (Lei nº 9.610/98). Não é permitido copiá-los para fins comerciais sem
+                    autorização.
+                </p>
+            </LegalSection>
 
-                            {/* 6. Limitação de Responsabilidade */}
-                            <div>
-                                <div className="flex items-center gap-4 mb-4">
-                                    <div className="h-8 w-1 bg-espelhart-accent rounded-full" />
-                                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-espelhart-darkest">6. Limitação de Responsabilidade</h2>
-                                </div>
-                                <p className="text-gray-600 leading-relaxed">
-                                    A Espelhart não se responsabiliza por danos indiretos, incidentais ou consequentes que resultem do uso ou da
-                                    impossibilidade de uso do site. As informações no site são fornecidas &ldquo;como estão&rdquo; e podem
-                                    conter imprecisões. Para informações atualizadas e precisas sobre serviços e preços, entre em contato
-                                    diretamente conosco via WhatsApp.
-                                </p>
-                            </div>
+            <LegalSection id="responsabilidade" title="8. Responsabilidade">
+                <p>
+                    Trabalhamos para manter as informações do site corretas e atualizadas, mas preços, prazos e condições só valem
+                    quando constam do orçamento. Nossa responsabilidade pelos serviços prestados segue o Código de Defesa do
+                    Consumidor e a legislação aplicável.
+                </p>
+            </LegalSection>
 
-                            {/* 7. Foro */}
-                            <div>
-                                <div className="flex items-center gap-4 mb-4">
-                                    <div className="h-8 w-1 bg-espelhart-accent rounded-full" />
-                                    <h2 className="text-xl sm:text-2xl md:text-3xl font-bold text-espelhart-darkest">7. Foro Competente</h2>
-                                </div>
-                                <p className="text-gray-600 leading-relaxed">
-                                    Estes Termos de Uso são regidos pelas leis da República Federativa do Brasil. Quaisquer disputas decorrentes
-                                    destes termos serão resolvidas no foro de Brasília/DF, com exclusão de qualquer outro.
-                                </p>
-                            </div>
+            <LegalSection id="privacidade" title="9. Privacidade">
+                <p>
+                    O tratamento dos seus dados pessoais está descrito na nossa{' '}
+                    <Link href="/politica-de-privacidade" className="font-semibold text-ink underline decoration-teal underline-offset-2">
+                        Política de Privacidade
+                    </Link>
+                    .
+                </p>
+            </LegalSection>
 
-                            {/* CTA */}
-                            <LegalCTA />
-                        </div>
-                    </div>
-                </section>
-            </main>
-            <Footer />
-            <FloatingWhatsApp />
-        </>
+            <LegalSection id="foro" title="10. Lei aplicável e foro">
+                <p>
+                    Estes termos são regidos pelas leis brasileiras. Fica eleito o foro de Brasília/DF para resolver eventuais
+                    conflitos, ressalvado o direito do consumidor de propor a ação no foro do seu domicílio, conforme o art. 101, I, do
+                    Código de Defesa do Consumidor.
+                </p>
+            </LegalSection>
+        </LegalPage>
     );
 }

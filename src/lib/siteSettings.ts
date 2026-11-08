@@ -14,6 +14,11 @@ export interface TitledText {
 }
 
 export interface SiteSettings {
+    // Company identity (shown in footer and legal pages)
+    companyLegalName: string;
+    cnpj: string;
+    dpoName: string;
+
     // Contact
     whatsappNumber: string;
     whatsappMessage: string;
@@ -71,6 +76,9 @@ export interface SiteSettings {
 }
 
 export const defaultSettings: SiteSettings = {
+    companyLegalName: 'LUIZ FELIPE SOUZA 05403061185',
+    cnpj: '41.634.235/0001-12',
+    dpoName: '',
     whatsappNumber: '556198179760',
     whatsappMessage: 'Olá! Gostaria de solicitar um orçamento.',
     phone: '(61) 99817-9760',
@@ -145,7 +153,7 @@ export function mergeSettings(stored: Partial<SiteSettings> | null | undefined):
         if (value === undefined || value === null) continue;
         if (typeof value === 'string' && value.trim() === '' && key in defaultSettings) {
             // Optional contact fields may be intentionally blank
-            if (['instagram', 'facebook', 'address', 'email', 'aboutText', 'hoursSaturday'].includes(key)) merged[key] = value;
+            if (['instagram', 'facebook', 'address', 'email', 'aboutText', 'hoursSaturday', 'companyLegalName', 'cnpj', 'dpoName'].includes(key)) merged[key] = value;
             continue;
         }
         if (Array.isArray(value) && value.length === 0) continue;

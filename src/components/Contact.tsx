@@ -6,6 +6,7 @@ import { useSettings, getWhatsAppUrl } from '@/lib/SettingsContext';
 import { useQuote } from '@/lib/QuoteContext';
 import { useServices } from '@/lib/useServices';
 import WhatsAppIcon from '@/components/WhatsAppIcon';
+import Link from 'next/link';
 
 const OTHER = 'Outro / ainda não sei';
 
@@ -259,6 +260,14 @@ export default function Contact() {
                                 </button>
                                 <p className="text-sm text-muted">Gratuito e sem compromisso.</p>
                             </div>
+                            <p className="pt-4 text-[13px] leading-relaxed text-muted max-w-xl border-t-0">
+                                Seus dados não ficam salvos no site: eles vão só na mensagem que você envia pelo WhatsApp, e usamos apenas
+                                para responder ao seu pedido. Veja a{' '}
+                                <Link href="/politica-de-privacidade" className="underline decoration-teal underline-offset-2 hover:text-ink">
+                                    Política de Privacidade
+                                </Link>
+                                .
+                            </p>
                         </form>
                     )}
                 </div>

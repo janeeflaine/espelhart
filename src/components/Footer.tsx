@@ -98,9 +98,16 @@ export default function Footer() {
                 </div>
 
                 <div className="pt-8 border-t border-white/10 flex flex-col sm:flex-row items-center justify-between gap-4 text-sm text-white/50">
-                    <p className="text-center sm:text-left">
-                        {settings.footerText || `© ${new Date().getFullYear()} Espelhart Vidros e Esquadrias. Todos os direitos reservados.`}
-                    </p>
+                    <div className="text-center sm:text-left space-y-1">
+                        <p>{settings.footerText || `© ${new Date().getFullYear()} Espelhart Vidros e Esquadrias. Todos os direitos reservados.`}</p>
+                        {(settings.companyLegalName || settings.cnpj) && (
+                            <p>
+                                {settings.companyLegalName}
+                                {settings.companyLegalName && settings.cnpj && ', '}
+                                {settings.cnpj && `CNPJ ${settings.cnpj}`}
+                            </p>
+                        )}
+                    </div>
                     <div className="flex items-center gap-5">
                         <Link href="/politica-de-privacidade" className="hover:text-white">Política de privacidade</Link>
                         <Link href="/termos-de-uso" className="hover:text-white">Termos de uso</Link>

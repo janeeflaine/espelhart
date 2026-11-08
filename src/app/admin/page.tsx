@@ -73,6 +73,12 @@ export default function AdminDashboard() {
             href: '/admin/settings',
         },
         {
+            ok: !!settings.cnpj && !!settings.companyLegalName,
+            good: 'Razão social e CNPJ no site',
+            bad: 'Informe a razão social e o CNPJ (exigência legal)',
+            href: '/admin/settings',
+        },
+        {
             ok: !!settings.instagram,
             good: 'Instagram ligado ao site',
             bad: 'Adicione o link do Instagram para mostrar mais obras',
