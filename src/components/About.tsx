@@ -2,6 +2,7 @@
 
 import { ShieldCheck, Award } from 'lucide-react';
 import { useSettings } from '@/lib/SettingsContext';
+import SiteImage from '@/components/SiteImage';
 
 export default function About() {
     const settings = useSettings();
@@ -11,16 +12,16 @@ export default function About() {
 
     return (
         <section id="sobre" className="bg-ink text-white py-16 sm:py-20 lg:py-28 overflow-hidden">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
                 <div className="order-2 lg:order-1 relative">
-                    <img
-                        src={settings.aboutImage}
-                        alt="Obra entregue pela Espelhart"
-                        className="w-full aspect-[4/5] sm:aspect-[4/3] lg:aspect-[4/5] object-cover rounded-md"
-                        loading="lazy"
-                        width={1000}
-                        height={1250}
-                    />
+                    <div className="relative w-full aspect-[4/5] sm:aspect-[4/3] lg:aspect-[4/5] overflow-hidden rounded-md">
+                        <SiteImage
+                            src={settings.aboutImage}
+                            alt="Obra entregue pela Espelhart"
+                            className="object-cover"
+                            sizes="(min-width: 1024px) 560px, calc(100vw - 2rem)"
+                        />
+                    </div>
                     <div className="absolute inset-y-6 -right-3 w-3 bg-edge/70 rounded-r" aria-hidden="true" />
                 </div>
 

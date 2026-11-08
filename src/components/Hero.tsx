@@ -4,6 +4,7 @@ import { Check } from 'lucide-react';
 import { useSettings, getWhatsAppUrl } from '@/lib/SettingsContext';
 import { useQuote } from '@/lib/QuoteContext';
 import WhatsAppIcon from '@/components/WhatsAppIcon';
+import SiteImage from '@/components/SiteImage';
 
 export default function Hero() {
     const settings = useSettings();
@@ -12,7 +13,7 @@ export default function Hero() {
 
     return (
         <section id="inicio" className="relative bg-mist overflow-hidden">
-            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-10 pb-14 sm:pt-14 lg:pt-20 lg:pb-24 grid lg:grid-cols-[1.05fr_1fr] gap-10 lg:gap-16 items-center">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-10 pb-14 sm:pt-14 lg:pt-20 lg:pb-24 grid grid-cols-1 lg:grid-cols-[minmax(0,1.05fr)_minmax(0,1fr)] gap-10 lg:gap-16 items-center">
                 <div>
                     <p className="inline-flex items-center gap-2 text-sm font-medium text-teal mb-5">
                         <span className="w-6 h-px bg-teal" aria-hidden="true" />
@@ -61,13 +62,12 @@ export default function Hero() {
                 <div className="relative mx-auto w-full max-w-[560px]">
                     <div className="window-frame">
                         <div className="relative aspect-[4/3] lg:aspect-[5/6] overflow-hidden rounded-[2px] bg-ink">
-                            <img
+                            <SiteImage
                                 src={settings.heroImage}
                                 alt="Projeto de vidros e esquadrias da Espelhart"
-                                className="absolute inset-0 w-full h-full object-cover"
-                                width={1100}
-                                height={1320}
-                                fetchPriority="high"
+                                className="object-cover"
+                                sizes="(min-width: 1024px) 560px, calc(100vw - 2rem)"
+                                priority
                             />
                             <div className="window-sash window-sash--fixed" aria-hidden="true" />
                             <div className="window-sash window-sash--moving" aria-hidden="true" />

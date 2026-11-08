@@ -5,7 +5,7 @@ import { Mail, HelpCircle } from 'lucide-react';
 
 export function LegalEmailText() {
     const settings = useSettings();
-    return <strong> {settings.email || 'contato@espelhart.com.br'}</strong>;
+    return <strong> {settings.email || 'contato@espelhart.com'}</strong>;
 }
 
 export function LegalCTA() {
@@ -22,7 +22,7 @@ export function LegalCTA() {
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <a
-                    href={`mailto:${settings.email || 'contato@espelhart.com.br'}`}
+                    href={`mailto:${settings.email || 'contato@espelhart.com'}`}
                     className="inline-flex items-center justify-center gap-2 bg-espelhart-accent hover:bg-espelhart-accent/90 px-8 py-3 rounded-xl font-bold transition-all"
                 >
                     <Mail className="w-4 h-4" />

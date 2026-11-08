@@ -24,7 +24,7 @@ export default function AdminQuotePage() {
                     </div>
                 </Panel>
                 <Panel title="Opções de resposta" description="Botões que o cliente toca no formulário.">
-                    <div className="grid sm:grid-cols-2 gap-8">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
                         <StringListEditor
                             label="Tipo de imóvel"
                             items={values.quotePropertyTypes}

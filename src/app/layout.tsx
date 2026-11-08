@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import { Archivo } from 'next/font/google';
 import { SettingsProvider } from '@/lib/SettingsContext';
+import { getServerSettings } from '@/lib/serverSettings';
 import './globals.css';
 
 const archivo = Archivo({
@@ -11,7 +12,7 @@ const archivo = Archivo({
 });
 
 export const metadata: Metadata = {
-  metadataBase: new URL('https://espelhart.com.br'),
+  metadataBase: new URL('https://espelhart.com'),
   title: 'Espelhart | Vidraçaria de Alto Padrão — Vidros e Esquadrias em Valparaíso de Goiás e DF',
   description:
     'Espelhart: vidraçaria especializada em box para banheiro, esquadrias de alumínio, guarda-corpo de vidro e vidros temperados. Qualidade premium, instalação profissional e orçamento gratuito via WhatsApp em Valparaíso de Goiás, Entorno e Distrito Federal.',
@@ -47,7 +48,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: 'website',
     locale: 'pt_BR',
-    url: 'https://espelhart.com.br',
+    url: 'https://espelhart.com',
     siteName: 'Espelhart Vidros e Esquadrias',
     title: 'Espelhart | Vidraçaria de Alto Padrão — Vidros e Esquadrias',
     description:
@@ -59,9 +60,6 @@ export const metadata: Metadata = {
     description:
       'Vidros e esquadrias premium em Valparaíso de Goiás e DF. Box para banheiro, guarda-corpo, esquadrias de alumínio. Solicite orçamento!',
   },
-  alternates: {
-    canonical: 'https://espelhart.com.br',
-  },
 };
 
 // JSON-LD Schema.org - LocalBusiness
@@ -69,15 +67,17 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
   name: 'Espelhart Vidros e Esquadrias',
-  image: 'https://espelhart.com.br/opengraph-image',
-  '@id': 'https://espelhart.com.br',
-  url: 'https://espelhart.com.br',
+  image: 'https://espelhart.com/opengraph-image',
+  '@id': 'https://espelhart.com',
+  url: 'https://espelhart.com',
   telephone: '+55-61-99817-9760',
   description:
     'Vidraçaria de alto padrão especializada em box para banheiro, esquadrias de alumínio, guarda-corpo de vidro e vidros temperados em Valparaíso de Goiás e região.',
   address: {
     '@type': 'PostalAddress',
+    streetAddress: 'Rua 9, Quadra 11, Lote G, Parque São Bernardo',
     addressLocality: 'Valparaíso de Goiás',
+    postalCode: '72870-425',
     addressRegion: 'GO',
     addressCountry: 'BR',
   },
@@ -96,10 +96,7 @@ const jsonLd = {
     },
   ],
   priceRange: '$$',
-  sameAs: [
-    'https://www.instagram.com/espelhart',
-    'https://www.facebook.com/espelhart',
-  ],
+  sameAs: ['https://www.instagram.com/espelhartvidroseesquadrias/'],
   hasOfferCatalog: {
     '@type': 'OfferCatalog',
     name: 'Serviços de Vidraçaria',
@@ -132,7 +129,7 @@ const jsonLd = {
   },
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
@@ -147,7 +144,7 @@ export default function RootLayout({
         />
       </head>
       <body className="font-sans antialiased overflow-x-hidden">
-        <SettingsProvider>
+        <SettingsProvider initial={await getServerSettings()}>
           <div className="relative min-h-screen flex flex-col overflow-x-hidden">
             {children}
           </div>

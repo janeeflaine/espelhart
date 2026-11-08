@@ -19,7 +19,7 @@ export default function AdminLoginPage() {
         setLoading(true);
         try {
             const { signInWithEmailAndPassword } = await import('firebase/auth');
-            const { auth } = await import('@/lib/firebase');
+            const { auth } = await import('@/lib/firebaseAuth');
             await signInWithEmailAndPassword(auth, email, password);
             router.push('/admin');
         } catch (err: unknown) {
@@ -44,7 +44,7 @@ export default function AdminLoginPage() {
         'w-full rounded-md border border-line bg-paper px-3.5 py-3 text-base text-ink placeholder:text-muted/60 focus:outline-none focus:border-teal focus:ring-[3px] focus:ring-teal/15';
 
     return (
-        <div className="min-h-screen grid lg:grid-cols-[1.1fr_1fr] bg-paper">
+        <div className="min-h-screen grid grid-cols-1 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,1fr)] bg-paper">
             {/* Brand side: the sliding window, open */}
             <div className="relative hidden lg:flex flex-col justify-between bg-ink text-white p-12 overflow-hidden">
                 <div className="flex items-center gap-2.5">

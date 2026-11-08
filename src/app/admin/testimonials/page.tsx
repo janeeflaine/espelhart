@@ -150,7 +150,7 @@ export default function AdminTestimonialsPage() {
                         action={newButton}
                     />
                 ) : (
-                    <ul className="grid sm:grid-cols-2 gap-3">
+                    <ul className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                         {items.map((t) => (
                             <li key={t.id} className="flex flex-col rounded-lg bg-paper border border-line/80 p-5">
                                 <div className="flex text-[#E8A33D]" aria-label={`${t.rating} de 5 estrelas`}>

@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     title: 'Termos de Uso | Espelhart Vidros e Esquadrias',
     description:
         'Termos de Uso da Espelhart Vidros e Esquadrias. Conheça as condições de uso do nosso site e dos nossos serviços.',
+    alternates: { canonical: '/termos-de-uso' },
 };
 
 export default function TermsOfUsePage() {

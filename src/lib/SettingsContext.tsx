@@ -13,8 +13,9 @@ export function useSettings() {
     return useContext(SettingsContext);
 }
 
-export function SettingsProvider({ children }: { children: ReactNode }) {
-    const [settings, setSettings] = useState<SiteSettings>(defaultSettings);
+export function SettingsProvider({ children, initial }: { children: ReactNode; initial?: SiteSettings }) {
+    // Server-rendered values first; then refreshed from Firestore so panel edits show immediately.
+    const [settings, setSettings] = useState<SiteSettings>(initial ?? defaultSettings);
 
     useEffect(() => {
         let active = true;

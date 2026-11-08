@@ -67,7 +67,7 @@ export default function AdminSettingsPage() {
                 </Panel>
 
                 <Panel title="Telefone, e-mail e endereço">
-                    <div className="grid sm:grid-cols-2 gap-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         <div>
                             <TextInput
                                 label="Telefone para ligações"
@@ -89,7 +89,7 @@ export default function AdminSettingsPage() {
                 </Panel>
 
                 <Panel title="Horário de atendimento">
-                    <div className="grid sm:grid-cols-2 gap-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         <TextInput label="Dias de semana" value={values.hoursWeek} onChange={(v) => set('hoursWeek', v)} placeholder="Seg a sex, 8h às 18h" />
                         <TextInput
                             label="Sábado"
@@ -102,7 +102,7 @@ export default function AdminSettingsPage() {
                 </Panel>
 
                 <Panel title="Redes sociais" description="Os ícones só aparecem no rodapé quando o link estiver preenchido.">
-                    <div className="grid sm:grid-cols-2 gap-5">
+                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-5">
                         <TextInput label="Instagram" type="url" value={values.instagram} onChange={(v) => set('instagram', v)} placeholder="https://instagram.com/espelhart" />
                         <TextInput label="Facebook" type="url" value={values.facebook} onChange={(v) => set('facebook', v)} placeholder="https://facebook.com/espelhart" />
                     </div>

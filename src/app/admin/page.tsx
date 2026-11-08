@@ -115,7 +115,7 @@ export default function AdminDashboard() {
                 ))}
             </div>
 
-            <div className="grid lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] gap-6 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,1fr)] gap-6 items-start">
                 {/* Health */}
                 <section className="rounded-lg bg-paper border border-line/80 p-5 sm:p-7">
                     <div className="flex items-center justify-between gap-4">

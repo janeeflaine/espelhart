@@ -1,6 +1,6 @@
 'use client';
 
-import { uploadImage } from '@/lib/firebaseAdmin';
+import { uploadImage } from '@/lib/firebaseStorage';
 
 /**
  * Resizes and re-encodes an image in the browser before upload so phone photos

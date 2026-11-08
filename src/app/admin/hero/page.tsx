@@ -18,7 +18,7 @@ export default function AdminHeroPage() {
                 siteAnchor=""
             />
 
-            <div className="grid xl:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] gap-6 items-start">
+            <div className="grid grid-cols-1 xl:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] gap-6 items-start">
                 <div className="space-y-6">
                     <Panel title="Textos">
                         <div className="space-y-5">

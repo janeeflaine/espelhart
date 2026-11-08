@@ -12,7 +12,7 @@ export default function AdminAboutPage() {
     return (
         <>
             <PageHeader title="Quem somos" description="Conte a história da Espelhart e mostre os números que dão confiança." siteAnchor="sobre" />
-            <div className="grid lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] gap-6 items-start">
+            <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,1.3fr)_minmax(0,1fr)] gap-6 items-start">
                 <div className="space-y-6">
                     <Panel title="Texto">
                         <div className="space-y-5">

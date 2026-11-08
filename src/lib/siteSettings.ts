@@ -74,7 +74,7 @@ export const defaultSettings: SiteSettings = {
     whatsappNumber: '556198179760',
     whatsappMessage: 'Olá! Gostaria de solicitar um orçamento.',
     phone: '(61) 99817-9760',
-    email: 'contato@espelhart.com.br',
+    email: 'contato@espelhart.com',
     address: '',
     hoursWeek: 'Seg a sex, 8h às 18h',
     hoursSaturday: 'Sábado, 8h às 12h',

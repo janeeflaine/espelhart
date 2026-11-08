@@ -90,7 +90,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
         (async () => {
             try {
                 const { onAuthStateChanged } = await import('firebase/auth');
-                const { auth } = await import('@/lib/firebase');
+                const { auth } = await import('@/lib/firebaseAuth');
                 unsubscribe = onAuthStateChanged(auth, (current) => {
                     setUser(current);
                     setLoading(false);
@@ -122,7 +122,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
     const handleLogout = async () => {
         if (PREVIEW) return;
         const { signOut } = await import('firebase/auth');
-        const { auth } = await import('@/lib/firebase');
+        const { auth } = await import('@/lib/firebaseAuth');
         await signOut(auth);
         router.push('/admin/login');
     };

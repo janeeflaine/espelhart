@@ -96,7 +96,7 @@ export default function Contact() {
 
     return (
         <section id="orcamento" className="py-16 sm:py-20 lg:py-28 bg-paper">
-            <div id="contato" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[minmax(0,7fr)_minmax(0,4fr)] gap-12 lg:gap-16">
+            <div id="contato" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid grid-cols-1 lg:grid-cols-[minmax(0,7fr)_minmax(0,4fr)] gap-12 lg:gap-16">
                 <div>
                     <h2 className="font-wide text-balance text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-ink leading-[1.08]">
                         {settings.quoteTitle}
@@ -172,7 +172,7 @@ export default function Contact() {
                                             ))}
                                         </div>
                                     </div>
-                                    <div className="grid sm:grid-cols-2 gap-4">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                                         <div>
                                             <label htmlFor={`${id}-medidas`} className="block text-sm font-medium text-ink mb-2">
                                                 Medidas aproximadas <span className="text-muted font-normal">(opcional)</span>

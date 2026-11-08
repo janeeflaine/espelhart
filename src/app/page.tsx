@@ -1,3 +1,4 @@
+import type { Metadata } from 'next';
 import { QuoteProvider } from '@/lib/QuoteContext';
 import Header from '@/components/Header';
 import Hero from '@/components/Hero';
@@ -10,6 +11,10 @@ import FAQ from '@/components/FAQ';
 import Contact from '@/components/Contact';
 import Footer from '@/components/Footer';
 import FloatingWhatsApp from '@/components/FloatingWhatsApp';
+
+export const metadata: Metadata = {
+    alternates: { canonical: '/' },
+};
 
 export default function Home() {
     return (

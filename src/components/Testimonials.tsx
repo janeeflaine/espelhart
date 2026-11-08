@@ -12,7 +12,7 @@ function initials(name: string) {
 function Stars({ value, size = 'w-4 h-4' }: { value: number; size?: string }) {
     const rounded = Math.round(value);
     return (
-        <span className="flex gap-0.5 text-[#E8A33D]" aria-label={`${value.toLocaleString('pt-BR', { maximumFractionDigits: 1 })} de 5 estrelas`}>
+        <span role="img" className="flex gap-0.5 text-[#E8A33D]" aria-label={`${value.toLocaleString('pt-BR', { maximumFractionDigits: 1 })} de 5 estrelas`}>
             {Array.from({ length: 5 }, (_, i) => (
                 <Star key={i} className={`${size} ${i < rounded ? 'fill-current' : 'opacity-30'}`} aria-hidden="true" />
             ))}

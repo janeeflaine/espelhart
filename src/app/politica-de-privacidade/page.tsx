@@ -10,6 +10,7 @@ export const metadata: Metadata = {
     title: 'Política de Privacidade | Espelhart Vidros e Esquadrias',
     description:
         'Política de Privacidade da Espelhart. Saiba como coletamos, usamos e protegemos suas informações pessoais em conformidade com a LGPD.',
+    alternates: { canonical: '/politica-de-privacidade' },
 };
 
 export default function PrivacyPolicyPage() {

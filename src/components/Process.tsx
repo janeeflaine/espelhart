@@ -13,7 +13,7 @@ export default function Process() {
                     {settings.processTitle}
                 </h2>
 
-                <ol className={`mt-10 lg:mt-14 grid sm:grid-cols-2 gap-8 lg:gap-6 ${steps.length >= 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'}`}>
+                <ol className={`mt-10 lg:mt-14 grid grid-cols-1 sm:grid-cols-2 gap-8 lg:gap-6 ${steps.length >= 4 ? 'lg:grid-cols-4' : 'lg:grid-cols-3'}`}>
                     {steps.map((step, i) => (
                         <li key={i} className="relative pt-6 border-t-2 border-ink/15">
                             <span

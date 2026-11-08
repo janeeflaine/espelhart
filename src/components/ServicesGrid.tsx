@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { useServices } from '@/lib/useServices';
 import { useQuote } from '@/lib/QuoteContext';
 import { useSettings } from '@/lib/SettingsContext';
+import SiteImage from '@/components/SiteImage';
 
 export default function ServicesGrid() {
     const services = useServices();
@@ -38,12 +39,12 @@ export default function ServicesGrid() {
                     </p>
                 </div>
 
-                <div className="grid lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-8 lg:gap-14">
+                <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,5fr)_minmax(0,7fr)] gap-8 lg:gap-14">
                     {/* Service list */}
                     <div
                         role="tablist"
                         aria-label="Serviços"
-                        className="flex lg:flex-col gap-2 lg:gap-0 overflow-x-auto no-scrollbar -mx-4 px-4 lg:mx-0 lg:px-0 lg:border-t lg:border-line"
+                        className="flex lg:flex-col gap-2 lg:gap-0 overflow-x-auto no-scrollbar -mx-4 px-4 pr-10 lg:mx-0 lg:px-0 lg:pr-0 lg:border-t lg:border-line [mask-image:linear-gradient(to_right,black_82%,transparent)] lg:[mask-image:none]"
                     >
                         {services.map((s, i) => {
                             const isSelected = i === index;
@@ -83,20 +84,18 @@ export default function ServicesGrid() {
                     <div id="painel-servico" role="tabpanel" aria-labelledby={`tab-servico-${index}`}>
                         <div className="relative aspect-[4/3] rounded-md overflow-hidden bg-mist">
                             {shown && (
-                                <img
+                                <SiteImage
                                     key={shown}
                                     src={shown}
                                     alt={`${active.title} instalado pela Espelhart`}
-                                    className="absolute inset-0 w-full h-full object-cover"
-                                    loading="lazy"
-                                    width={1200}
-                                    height={900}
+                                    className="object-cover"
+                                    sizes="(min-width: 1280px) 700px, (min-width: 1024px) 58vw, calc(100vw - 2rem)"
                                 />
                             )}
                         </div>
 
                         {images.length > 1 && (
-                            <div className="mt-3 flex gap-2 overflow-x-auto no-scrollbar" aria-label="Mais fotos">
+                            <div className="mt-3 flex gap-2 overflow-x-auto no-scrollbar pr-8 [mask-image:linear-gradient(to_right,black_85%,transparent)]" aria-label="Mais fotos">
                                 {images.map((src, i) => (
                                     <button
                                         key={src}
@@ -104,9 +103,9 @@ export default function ServicesGrid() {
                                         onClick={() => setPhoto(src)}
                                         aria-label={`Ver foto ${i + 1} de ${images.length}`}
                                         aria-pressed={src === shown}
-                                        className={`shrink-0 w-20 h-16 rounded overflow-hidden border-2 transition-colors ${src === shown ? 'border-teal' : 'border-transparent opacity-70 hover:opacity-100'}`}
+                                        className={`relative shrink-0 w-20 h-16 rounded overflow-hidden border-2 transition-colors ${src === shown ? 'border-teal' : 'border-transparent opacity-70 hover:opacity-100'}`}
                                     >
-                                        <img src={src} alt="" className="w-full h-full object-cover" loading="lazy" />
+                                        <SiteImage src={src} alt="" className="object-cover" sizes="80px" />
                                     </button>
                                 ))}
                             </div>
