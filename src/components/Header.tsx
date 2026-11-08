@@ -1,72 +1,75 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import Link from 'next/link';
-import { Menu, X, MessageCircle } from 'lucide-react';
-import { useSettings, getWhatsAppUrl } from '@/lib/SettingsContext';
+import { Menu, X, Phone } from 'lucide-react';
+import { useSettings } from '@/lib/SettingsContext';
+import { useQuote } from '@/lib/QuoteContext';
+import Logo from '@/components/Logo';
+import { useTestimonials } from '@/lib/useTestimonials';
 
-const navLinks = [
-    { href: '/#inicio', label: 'Início' },
+const baseNavLinks = [
     { href: '/#servicos', label: 'Serviços' },
+    { href: '/#como-funciona', label: 'Como funciona' },
     { href: '/#sobre', label: 'Sobre' },
-    { href: '/#depoimentos', label: 'Depoimentos' },
-    { href: '/#faq', label: 'FAQ' },
-    { href: '/#contato', label: 'Contato' },
+    { href: '/#faq', label: 'Dúvidas' },
 ];
+
+function telHref(phone: string) {
+    const digits = phone.replace(/\D/g, '');
+    return `tel:+55${digits}`;
+}
 
 export default function Header() {
     const [mobileOpen, setMobileOpen] = useState(false);
     const [scrolled, setScrolled] = useState(false);
-
     const settings = useSettings();
-    const whatsappUrl = getWhatsAppUrl(settings.whatsappNumber, 'Olá! Gostaria de solicitar um orçamento.');
+    const { requestQuote } = useQuote();
+    const hasTestimonials = useTestimonials().length > 0;
+    const navLinks = hasTestimonials
+        ? [...baseNavLinks.slice(0, 3), { href: '/#depoimentos', label: 'Clientes' }, ...baseNavLinks.slice(3)]
+        : baseNavLinks;
 
     useEffect(() => {
-        const handleScroll = () => setScrolled(window.scrollY > 20);
-        window.addEventListener('scroll', handleScroll);
-        return () => window.removeEventListener('scroll', handleScroll);
+        const onScroll = () => setScrolled(window.scrollY > 8);
+        onScroll();
+        window.addEventListener('scroll', onScroll, { passive: true });
+        return () => window.removeEventListener('scroll', onScroll);
     }, []);
 
-    // Close mobile menu on resize
     useEffect(() => {
-        const handleResize = () => {
-            if (window.innerWidth >= 768) setMobileOpen(false);
+        const onResize = () => {
+            if (window.innerWidth >= 1024) setMobileOpen(false);
         };
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
+        window.addEventListener('resize', onResize);
+        return () => window.removeEventListener('resize', onResize);
     }, []);
 
-    // Prevent body scroll when mobile menu open
     useEffect(() => {
         document.body.style.overflow = mobileOpen ? 'hidden' : '';
-        return () => { document.body.style.overflow = ''; };
+        if (!mobileOpen) return;
+        const onKey = (e: KeyboardEvent) => e.key === 'Escape' && setMobileOpen(false);
+        window.addEventListener('keydown', onKey);
+        return () => {
+            document.body.style.overflow = '';
+            window.removeEventListener('keydown', onKey);
+        };
     }, [mobileOpen]);
+
+    const phone = settings.phone || '(61) 9817-9760';
 
     return (
         <header
-            className={`sticky top-0 z-50 transition-all duration-300 ${scrolled
-                ? 'bg-espelhart-darkest/95 shadow-lg shadow-black/20 backdrop-blur-md'
-                : 'bg-espelhart-darkest'
-                }`}
+            className={`sticky top-0 z-50 bg-paper/95 backdrop-blur-md transition-shadow ${scrolled ? 'shadow-[0_1px_0_var(--color-line)]' : ''}`}
         >
-            <nav className="container mx-auto px-4 sm:px-6 lg:px-8 py-4 flex items-center justify-between">
-                {/* Logo */}
-                <Link href="/" className="flex items-center gap-2 group">
-                    <div className="w-9 h-9 bg-espelhart-accent rounded-lg flex items-center justify-center text-white font-bold text-lg group-hover:scale-105 transition-transform">
-                        E
-                    </div>
-                    <span className="text-xl sm:text-2xl font-bold tracking-wider text-white">
-                        ESPEL<span className="text-espelhart-accent">HART</span>
-                    </span>
-                </Link>
+            <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 h-16 lg:h-[72px] flex items-center justify-between gap-6">
+                <Logo />
 
-                {/* Desktop Navigation */}
-                <ul className="hidden md:flex items-center gap-1 lg:gap-2">
+                <ul className="hidden lg:flex items-center gap-1">
                     {navLinks.map((link) => (
                         <li key={link.href}>
                             <a
                                 href={link.href}
-                                className="px-3 py-2 text-sm lg:text-base font-medium text-gray-300 hover:text-espelhart-accent transition-colors rounded-md hover:bg-white/5"
+                                className="px-3 py-2 text-[15px] font-medium text-muted hover:text-ink transition-colors"
                             >
                                 {link.label}
                             </a>
@@ -74,68 +77,68 @@ export default function Header() {
                     ))}
                 </ul>
 
-                {/* Desktop CTA */}
-                <a
-                    href={whatsappUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="hidden md:inline-flex items-center gap-2 bg-whatsapp hover:bg-whatsapp-hover text-white px-5 py-2.5 rounded-lg font-semibold text-sm transition-all hover:shadow-lg hover:shadow-green-500/25"
-                >
-                    <MessageCircle className="w-4 h-4" />
-                    Solicitar Orçamento
-                </a>
+                <div className="hidden lg:flex items-center gap-5">
+                    <a href={telHref(phone)} className="inline-flex items-center gap-2 text-[15px] font-semibold text-ink hover:text-teal">
+                        <Phone className="w-4 h-4" aria-hidden="true" />
+                        {phone}
+                    </a>
+                    <button
+                        type="button"
+                        onClick={() => requestQuote()}
+                        className="bg-ink hover:bg-ink-2 text-white px-5 py-2.5 rounded-md font-semibold text-[15px] transition-colors"
+                    >
+                        Pedir orçamento
+                    </button>
+                </div>
 
-                {/* Mobile Menu Toggle */}
                 <button
-                    onClick={() => setMobileOpen(!mobileOpen)}
-                    className="md:hidden text-white p-2 rounded-lg hover:bg-white/10 transition-colors"
+                    type="button"
+                    onClick={() => setMobileOpen((o) => !o)}
+                    className="lg:hidden -mr-2 p-2 text-ink"
                     aria-label={mobileOpen ? 'Fechar menu' : 'Abrir menu'}
+                    aria-expanded={mobileOpen}
+                    aria-controls="menu-mobile"
                 >
                     {mobileOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
                 </button>
             </nav>
 
-            {/* Mobile Menu Drawer */}
             <div
-                className={`md:hidden fixed inset-0 top-[72px] z-40 transition-all duration-300 ${mobileOpen ? 'visible opacity-100' : 'invisible opacity-0'
-                    }`}
+                id="menu-mobile"
+                className={`lg:hidden fixed inset-x-0 top-16 bottom-0 bg-paper transition-opacity duration-200 ${mobileOpen ? 'opacity-100 visible' : 'opacity-0 invisible'}`}
             >
-                {/* Backdrop */}
-                <div
-                    className="absolute inset-0 bg-black/60"
-                    onClick={() => setMobileOpen(false)}
-                />
-
-                {/* Menu Panel */}
-                <div
-                    className={`absolute top-0 right-0 w-full max-w-sm h-full bg-espelhart-darkest shadow-2xl transform transition-transform duration-300 ${mobileOpen ? 'translate-x-0' : 'translate-x-full'
-                        }`}
-                >
-                    <div className="flex flex-col p-6 gap-2">
-                        {navLinks.map((link, index) => (
-                            <a
-                                key={link.href}
-                                href={link.href}
-                                onClick={() => setMobileOpen(false)}
-                                className="px-4 py-3 text-lg font-medium text-gray-200 hover:text-espelhart-accent hover:bg-white/5 rounded-xl transition-all"
-                                style={{ animationDelay: `${index * 50}ms` }}
-                            >
-                                {link.label}
-                            </a>
+                <div className="flex flex-col h-full px-4 pt-4 pb-8">
+                    <ul className="flex flex-col">
+                        {navLinks.map((link) => (
+                            <li key={link.href} className="border-b border-line">
+                                <a
+                                    href={link.href}
+                                    onClick={() => setMobileOpen(false)}
+                                    className="block py-4 font-wide text-xl font-semibold text-ink"
+                                >
+                                    {link.label}
+                                </a>
+                            </li>
                         ))}
-
-                        <div className="mt-4 pt-4 border-t border-white/10">
-                            <a
-                                href={whatsappUrl}
-                                target="_blank"
-                                rel="noopener noreferrer"
-                                onClick={() => setMobileOpen(false)}
-                                className="flex items-center justify-center gap-3 bg-whatsapp hover:bg-whatsapp-hover text-white px-6 py-4 rounded-xl font-bold text-lg transition-all w-full"
-                            >
-                                <MessageCircle className="w-6 h-6" />
-                                Solicitar Orçamento
-                            </a>
-                        </div>
+                    </ul>
+                    <div className="mt-auto flex flex-col gap-3">
+                        <button
+                            type="button"
+                            onClick={() => {
+                                setMobileOpen(false);
+                                requestQuote();
+                            }}
+                            className="w-full bg-ink text-white py-4 rounded-md font-semibold text-base"
+                        >
+                            Pedir orçamento
+                        </button>
+                        <a
+                            href={telHref(phone)}
+                            className="w-full inline-flex items-center justify-center gap-2 border border-line py-4 rounded-md font-semibold text-ink"
+                        >
+                            <Phone className="w-4 h-4" aria-hidden="true" />
+                            Ligar {phone}
+                        </a>
                     </div>
                 </div>
             </div>

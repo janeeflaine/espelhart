@@ -70,7 +70,6 @@ export function SettingsProvider({ children }: { children: ReactNode }) {
         async function loadSettings() {
             try {
                 const data = await getSettings();
-                console.log("Settings loaded from Firestore:", data);
                 if (data) {
                     setSettings({ ...defaultSettings, ...data });
                 }

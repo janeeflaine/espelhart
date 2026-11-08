@@ -1,82 +1,87 @@
 'use client';
 
-import { MessageCircle, ArrowDown } from 'lucide-react';
-import Link from 'next/link';
+import { Check } from 'lucide-react';
 import { useSettings, getWhatsAppUrl } from '@/lib/SettingsContext';
+import { useQuote } from '@/lib/QuoteContext';
+import WhatsAppIcon from '@/components/WhatsAppIcon';
+
+const promises = ['Orçamento gratuito', 'Medição no local', 'Peças sob medida', 'Garantia em todos os serviços'];
 
 export default function Hero() {
     const settings = useSettings();
-    const whatsappUrl = getWhatsAppUrl(settings.whatsappNumber, 'Olá! Gostaria de solicitar um orçamento para meu projeto.');
+    const { requestQuote } = useQuote();
+    const whatsappUrl = getWhatsAppUrl(settings.whatsappNumber, 'Olá! Vim pelo site e gostaria de um orçamento.');
 
     return (
-        <section
-            id="inicio"
-            className="relative min-h-[90vh] sm:min-h-[85vh] flex items-center justify-center overflow-hidden"
-        >
-            {/* Background Image */}
-            <div className="absolute inset-0 z-0">
-                <img
-                    src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80"
-                    alt="Arquitetura moderna com vidros e esquadrias de alto padrão"
-                    className="w-full h-full object-cover"
-                    loading="eager"
-                />
-                <div className="absolute inset-0 bg-gradient-to-b from-espelhart-darkest/80 via-espelhart-darkest/60 to-espelhart-darkest/90" />
-            </div>
-
-            {/* Hero Content */}
-            <div className="relative z-10 container mx-auto px-4 sm:px-6 lg:px-8 text-center text-white py-20">
-                {/* Badge */}
-                <div className="inline-flex items-center gap-2 bg-white/10 backdrop-blur-sm border border-white/20 rounded-full px-5 py-2 mb-8">
-                    <div className="w-2 h-2 bg-espelhart-accent rounded-full animate-pulse" />
-                    <span className="text-sm font-medium text-espelhart-light">
+        <section id="inicio" className="relative bg-mist overflow-hidden">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 pt-10 pb-14 sm:pt-14 lg:pt-20 lg:pb-24 grid lg:grid-cols-[1.05fr_1fr] gap-10 lg:gap-16 items-center">
+                <div>
+                    <p className="inline-flex items-center gap-2 text-sm font-medium text-teal mb-5">
+                        <span className="w-6 h-px bg-teal" aria-hidden="true" />
                         {settings.heroBadge || 'Referência em Vidraçaria de Alto Padrão'}
-                    </span>
+                    </p>
+
+                    <h1 className="font-wide text-balance text-[2.15rem] leading-[1.04] sm:text-5xl lg:text-[3.6rem] xl:text-[4rem] font-bold text-ink whitespace-pre-line">
+                        {settings.heroTitle || 'Vidros e Esquadrias\nde Alto Padrão'}
+                    </h1>
+
+                    <p className="mt-6 text-base sm:text-lg leading-relaxed text-muted max-w-[34rem] whitespace-pre-line">
+                        {settings.heroSubtitle ||
+                            'Transformamos seus projetos em realidade com qualidade premium, acabamento impecável e atendimento personalizado.'}
+                    </p>
+
+                    <div className="mt-8 flex flex-col sm:flex-row gap-3">
+                        <button
+                            type="button"
+                            onClick={() => requestQuote()}
+                            className="inline-flex items-center justify-center bg-ink hover:bg-ink-2 text-white px-7 py-4 rounded-md font-semibold text-base transition-colors"
+                        >
+                            Pedir orçamento gratuito
+                        </button>
+                        <a
+                            href={whatsappUrl}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="inline-flex items-center justify-center gap-2.5 bg-wa hover:bg-wa-dark text-ink px-7 py-4 rounded-md font-semibold text-base transition-colors"
+                        >
+                            <WhatsAppIcon />
+                            Conversar no WhatsApp
+                        </a>
+                    </div>
+
+                    <ul className="mt-9 grid grid-cols-2 gap-x-6 gap-y-3 max-w-lg">
+                        {promises.map((p) => (
+                            <li key={p} className="flex items-center gap-2 text-sm font-medium text-ink">
+                                <Check className="w-4 h-4 text-teal shrink-0" aria-hidden="true" />
+                                {p}
+                            </li>
+                        ))}
+                    </ul>
                 </div>
 
-                {/* Title */}
-                <h1 className="text-2xl sm:text-4xl md:text-5xl lg:text-6xl xl:text-7xl font-bold mb-6 leading-tight tracking-tight whitespace-pre-line break-words">
-                    {settings.heroTitle || 'Vidros e Esquadrias\nde Alto Padrão'}
-                </h1>
-
-                {/* Subtitle */}
-                <p className="text-sm sm:text-lg md:text-xl lg:text-2xl mb-10 max-w-3xl mx-auto text-gray-300 font-light leading-relaxed whitespace-pre-line break-words">
-                    {settings.heroSubtitle || 'Transformamos seus projetos em realidade com qualidade premium, acabamento impecável e atendimento personalizado.'}
-                </p>
-
-                {/* CTA Buttons */}
-                <div className="flex flex-col sm:flex-row items-center justify-center gap-4 px-2 sm:px-0">
-                    <a
-                        href={whatsappUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="group flex items-center gap-3 bg-whatsapp hover:bg-whatsapp-hover text-white text-base sm:text-lg px-6 sm:px-10 py-4 rounded-full font-bold shadow-lg shadow-green-500/25 transition-all hover:scale-105 hover:shadow-xl hover:shadow-green-500/30 w-full sm:w-auto justify-center"
-                    >
-                        <MessageCircle className="w-6 h-6 group-hover:animate-bounce shrink-0" />
-                        <span className="truncate">Falar com Especialista</span>
-                    </a>
-
-                    <Link
-                        href="/#servicos"
-                        className="flex items-center gap-2 text-white/80 hover:text-white border border-white/30 hover:border-white/60 px-8 py-4 rounded-full font-medium transition-all hover:bg-white/5 w-full sm:w-auto justify-center text-sm sm:text-base"
-                    >
-                        Conheça Nossos Serviços
-                        <ArrowDown className="w-4 h-4 shrink-0 transition-transform group-hover:translate-y-1" />
-                    </Link>
-                </div>
-
-                {/* Stats Bar */}
-                <div className="mt-16 sm:mt-20 flex flex-wrap items-center justify-center gap-8 sm:gap-12 lg:gap-16">
-                    {(settings.aboutStats || [
-                        { value: '10+', label: 'Anos de Mercado' },
-                        { value: '1500+', label: 'Projetos Entregues' },
-                        { value: '100%', label: 'Satisfação Garantida' },
-                    ]).map((stat, i) => (
-                        <div key={i} className="text-center relative px-2">
-                            <span className="block text-2xl sm:text-4xl font-bold text-espelhart-accent">{stat.value}</span>
-                            <span className="text-xs text-gray-400 font-medium uppercase tracking-wider">{stat.label}</span>
+                {/* Signature: sliding aluminium window that opens once on load */}
+                <div className="relative mx-auto w-full max-w-[560px]">
+                    <div className="window-frame">
+                        <div className="relative aspect-[4/3] lg:aspect-[5/6] overflow-hidden rounded-[2px] bg-ink">
+                            <img
+                                src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1100&q=80"
+                                alt="Sala ampla com grandes painéis de vidro e esquadrias de alumínio"
+                                className="absolute inset-0 w-full h-full object-cover"
+                                width={1100}
+                                height={1320}
+                                fetchPriority="high"
+                            />
+                            <div className="window-sash window-sash--fixed" aria-hidden="true" />
+                            <div className="window-sash window-sash--moving" aria-hidden="true" />
+                            {/* track rails */}
+                            <div className="absolute inset-x-0 top-0 h-[6px] bg-[#9AA6A9]" aria-hidden="true" />
+                            <div className="absolute inset-x-0 bottom-0 h-[6px] bg-[#7C898D]" aria-hidden="true" />
                         </div>
-                    ))}
+                    </div>
+                    <div className="absolute -bottom-5 left-4 sm:-left-6 bg-paper rounded-md shadow-lg px-4 py-3 border border-line">
+                        <p className="text-xs text-muted">Atendimento</p>
+                        <p className="text-sm font-semibold text-ink">Seg a sex 8h–18h, sáb 8h–12h</p>
+                    </div>
                 </div>
             </div>
         </section>

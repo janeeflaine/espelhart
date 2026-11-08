@@ -1,19 +1,20 @@
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
+import { Archivo } from 'next/font/google';
 import { SettingsProvider } from '@/lib/SettingsContext';
 import './globals.css';
 
-const inter = Inter({
+const archivo = Archivo({
   subsets: ['latin'],
-  variable: '--font-inter',
+  axes: ['wdth'],
+  variable: '--font-archivo',
   display: 'swap',
 });
 
 export const metadata: Metadata = {
   metadataBase: new URL('https://espelhart.com.br'),
-  title: 'Espelhart | Vidraçaria de Alto Padrão — Vidros e Esquadrias em São Paulo',
+  title: 'Espelhart | Vidraçaria de Alto Padrão — Vidros e Esquadrias em Valparaíso de Goiás e DF',
   description:
-    'Espelhart: vidraçaria especializada em box para banheiro, esquadrias de alumínio, guarda-corpo de vidro e vidros temperados. Qualidade premium, instalação profissional e orçamento gratuito via WhatsApp em São Paulo.',
+    'Espelhart: vidraçaria especializada em box para banheiro, esquadrias de alumínio, guarda-corpo de vidro e vidros temperados. Qualidade premium, instalação profissional e orçamento gratuito via WhatsApp em Valparaíso de Goiás, Entorno e Distrito Federal.',
   keywords: [
     'vidraçaria',
     'vidros e esquadrias',
@@ -23,7 +24,8 @@ export const metadata: Metadata = {
     'esquadrias de alumínio',
     'vidros temperados',
     'espelhos decorativos',
-    'vidraçaria em São Paulo',
+    'vidraçaria em Valparaíso de Goiás',
+    'vidraçaria no DF',
     'vidraçaria de alto padrão',
     'fechamento de sacada',
     'porta de vidro',
@@ -50,27 +52,15 @@ export const metadata: Metadata = {
     title: 'Espelhart | Vidraçaria de Alto Padrão — Vidros e Esquadrias',
     description:
       'Soluções completas em vidros e esquadrias de alto padrão. Box para banheiro, esquadrias de alumínio, guarda-corpo de vidro. Orçamento gratuito!',
-    images: [
-      {
-        url: '/og-image.jpg',
-        width: 1200,
-        height: 630,
-        alt: 'Espelhart Vidros e Esquadrias de Alto Padrão',
-      },
-    ],
   },
   twitter: {
     card: 'summary_large_image',
     title: 'Espelhart | Vidraçaria de Alto Padrão',
     description:
-      'Vidros e esquadrias premium em São Paulo. Box para banheiro, guarda-corpo, esquadrias de alumínio. Solicite orçamento!',
-    images: ['/og-image.jpg'],
+      'Vidros e esquadrias premium em Valparaíso de Goiás e DF. Box para banheiro, guarda-corpo, esquadrias de alumínio. Solicite orçamento!',
   },
   alternates: {
     canonical: 'https://espelhart.com.br',
-  },
-  other: {
-    'google-site-verification': 'YOUR_VERIFICATION_CODE',
   },
 };
 
@@ -79,24 +69,17 @@ const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'LocalBusiness',
   name: 'Espelhart Vidros e Esquadrias',
-  image: 'https://espelhart.com.br/og-image.jpg',
+  image: 'https://espelhart.com.br/opengraph-image',
   '@id': 'https://espelhart.com.br',
   url: 'https://espelhart.com.br',
   telephone: '+55-61-9817-9760',
   description:
-    'Vidraçaria de alto padrão especializada em box para banheiro, esquadrias de alumínio, guarda-corpo de vidro e vidros temperados em São Paulo.',
+    'Vidraçaria de alto padrão especializada em box para banheiro, esquadrias de alumínio, guarda-corpo de vidro e vidros temperados em Valparaíso de Goiás e região.',
   address: {
     '@type': 'PostalAddress',
-    streetAddress: 'Av. Industrial, 1234',
-    addressLocality: 'São Paulo',
-    addressRegion: 'SP',
-    postalCode: '00000-000',
+    addressLocality: 'Valparaíso de Goiás',
+    addressRegion: 'GO',
     addressCountry: 'BR',
-  },
-  geo: {
-    '@type': 'GeoCoordinates',
-    latitude: -23.5505,
-    longitude: -46.6333,
   },
   openingHoursSpecification: [
     {
@@ -113,11 +96,6 @@ const jsonLd = {
     },
   ],
   priceRange: '$$',
-  aggregateRating: {
-    '@type': 'AggregateRating',
-    ratingValue: '4.9',
-    reviewCount: '187',
-  },
   sameAs: [
     'https://www.instagram.com/espelhart',
     'https://www.facebook.com/espelhart',
@@ -160,11 +138,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR" className={inter.variable}>
+    <html lang="pt-BR" className={archivo.variable}>
       <head>
-        <link rel="icon" href="/favicon.ico" />
-        <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-        <meta name="theme-color" content="#011A23" />
+        <meta name="theme-color" content="#0C2329" />
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}

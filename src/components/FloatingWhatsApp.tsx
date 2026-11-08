@@ -1,24 +1,45 @@
 'use client';
 
-import { MessageCircle } from 'lucide-react';
 import { useSettings, getWhatsAppUrl } from '@/lib/SettingsContext';
+import { useQuote } from '@/lib/QuoteContext';
+import WhatsAppIcon from '@/components/WhatsAppIcon';
 
+/** Desktop: floating WhatsApp button. Mobile: bottom action bar (quote + WhatsApp). */
 export default function FloatingWhatsApp() {
     const settings = useSettings();
+    const { requestQuote } = useQuote();
     const whatsappUrl = getWhatsAppUrl(settings.whatsappNumber, settings.whatsappMessage);
 
     return (
-        <a
-            href={whatsappUrl}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="fixed bottom-6 right-5 sm:bottom-8 sm:right-8 z-[100] bg-whatsapp hover:bg-whatsapp-hover text-white w-14 h-14 sm:w-16 sm:h-16 rounded-full flex items-center justify-center shadow-2xl shadow-green-500/40 hover:scale-110 transition-all group active:scale-95"
-            aria-label="Contato via WhatsApp"
-        >
-            <MessageCircle className="w-7 h-7 sm:w-8 sm:h-8 group-hover:animate-bounce shrink-0" />
+        <>
+            <a
+                href={whatsappUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Conversar no WhatsApp"
+                className="hidden lg:flex fixed bottom-8 right-8 z-[100] w-16 h-16 rounded-full bg-wa hover:bg-wa-dark text-ink items-center justify-center shadow-[0_12px_30px_-8px_rgba(12,35,41,0.5)] transition-transform hover:scale-105"
+            >
+                <WhatsAppIcon className="w-8 h-8" />
+            </a>
 
-            {/* Ping animation */}
-            <span className="absolute inset-0 rounded-full bg-whatsapp animate-ping opacity-20" />
-        </a>
+            <div className="lg:hidden fixed inset-x-0 bottom-0 z-[100] bg-paper/95 backdrop-blur border-t border-line px-4 pt-3 pb-[max(0.75rem,env(safe-area-inset-bottom))] flex gap-3">
+                <button
+                    type="button"
+                    onClick={() => requestQuote()}
+                    className="flex-1 bg-ink text-white rounded-md py-3.5 font-semibold text-[15px]"
+                >
+                    Pedir orçamento
+                </button>
+                <a
+                    href={whatsappUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex-1 inline-flex items-center justify-center gap-2 bg-wa text-ink rounded-md py-3.5 font-semibold text-[15px]"
+                >
+                    <WhatsAppIcon />
+                    WhatsApp
+                </a>
+            </div>
+        </>
     );
 }

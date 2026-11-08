@@ -1,136 +1,88 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { Star } from 'lucide-react';
-import { getTestimonials } from '@/lib/firebaseAdmin';
+import { useRef } from 'react';
+import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
+import { useTestimonials } from '@/lib/useTestimonials';
 
-interface TestimonialItem {
-    name: string;
-    text: string;
-    rating: number;
-    date?: string;
-    avatar?: string;
+function initials(name: string) {
+    return name.split(' ').filter(Boolean).map((n) => n[0]).join('').slice(0, 2).toUpperCase();
 }
 
-const fallbackTestimonials: TestimonialItem[] = [
-    {
-        name: 'Ricardo Souza',
-        text: 'Instalei janelas de alumínio em todo o meu apartamento. O acabamento é excelente e os instaladores foram muito profissionais. Recomendo demais!',
-        rating: 5,
-        date: 'Há 2 meses',
-    },
-    {
-        name: 'Mariana Silva',
-        text: 'O box do banheiro ficou incrível! Vidro temperado perfeito, sem nenhum defeito. O atendimento da Espelhart superou minhas expectativas.',
-        rating: 5,
-        date: 'Há 1 mês',
-    },
-    {
-        name: 'Carlos Eduardo',
-        text: 'Preço justo e qualidade de primeira. O guarda-corpo de vidro da varanda ficou lindo, vedação perfeita. Zero barulho da rua com as esquadrias.',
-        rating: 5,
-        date: 'Há 3 semanas',
-    },
-    {
-        name: 'Ana Beatriz',
-        text: 'Fiz o fechamento da sacada com vidro temperado e ficou espetacular. A equipe foi pontual, limpa e extremamente competente.',
-        rating: 5,
-        date: 'Há 1 semana',
-    },
-    {
-        name: 'Fernando Costa',
-        text: 'Profissionalismo impecável. Desde a medição até a instalação, a equipe foi muito cuidadosa. As janelas ficaram maravilhosas.',
-        rating: 5,
-        date: 'Há 2 semanas',
-    },
-    {
-        name: 'Juliana Oliveira',
-        text: 'Qualidade superior! As esquadrias de alumínio estão em outro nível. O acabamento é perfeito. Recomendo fortemente para projetos de alto padrão.',
-        rating: 5,
-        date: 'Há 5 dias',
-    },
-];
-
-function getInitials(name: string) {
-    return name
-        .split(' ')
-        .map((n) => n[0])
-        .join('')
-        .slice(0, 2)
-        .toUpperCase();
+function Stars({ value, size = 'w-4 h-4' }: { value: number; size?: string }) {
+    const rounded = Math.round(value);
+    return (
+        <span className="flex gap-0.5 text-[#E8A33D]" aria-label={`${value.toLocaleString('pt-BR', { maximumFractionDigits: 1 })} de 5 estrelas`}>
+            {Array.from({ length: 5 }, (_, i) => (
+                <Star key={i} className={`${size} ${i < rounded ? 'fill-current' : 'opacity-30'}`} aria-hidden="true" />
+            ))}
+        </span>
+    );
 }
 
 export default function Testimonials() {
-    const [testimonials, setTestimonials] = useState<TestimonialItem[]>(fallbackTestimonials);
+    const items = useTestimonials();
+    const rail = useRef<HTMLUListElement>(null);
 
-    useEffect(() => {
-        async function loadTestimonials() {
-            try {
-                const data = await getTestimonials();
-                if (data.length > 0) {
-                    setTestimonials(data);
-                }
-            } catch (error) {
-                console.error('Error loading testimonials from Firestore:', error);
-            }
-        }
-        loadTestimonials();
-    }, []);
+    // Hidden until real testimonials are registered in the admin panel.
+    if (items.length === 0) return null;
+
+    const average = items.reduce((sum, t) => sum + (Number(t.rating) || 0), 0) / items.length;
+
+    const scroll = (dir: 1 | -1) => {
+        const el = rail.current;
+        if (!el) return;
+        const card = el.querySelector('li');
+        el.scrollBy({ left: dir * ((card?.clientWidth ?? 320) + 20), behavior: 'smooth' });
+    };
 
     return (
-        <section id="depoimentos" className="py-16 sm:py-20 lg:py-24 bg-espelhart-darkest overflow-hidden">
-            <div className="container mx-auto px-4 sm:px-6 lg:px-8">
-                {/* Section Header */}
-                <div className="text-center mb-12 sm:mb-16">
-                    <span className="text-espelhart-accent font-semibold tracking-widest uppercase text-sm">
-                        Avaliações
-                    </span>
-                    <h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-white mt-2 mb-4 break-words">
-                        O que nossos clientes dizem
-                    </h2>
-                    <div className="w-20 h-1 bg-espelhart-accent mx-auto rounded-full" />
-                    <div className="mt-4 inline-flex items-center gap-2 text-gray-400 text-sm">
-                        <div className="flex text-yellow-400">
-                            {[...Array(5)].map((_, i) => (
-                                <Star key={i} className="w-4 h-4 fill-current" />
-                            ))}
+        <section id="depoimentos" className="py-16 sm:py-20 lg:py-28 bg-mist overflow-hidden">
+            <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10">
+                    <div>
+                        <h2 className="font-wide text-balance text-3xl sm:text-4xl font-bold text-ink leading-[1.08]">
+                            Quem já instalou, recomenda
+                        </h2>
+                        <div className="mt-4 flex items-center gap-3 text-sm text-muted">
+                            <Stars value={average} />
+                            <span>
+                                Média {average.toLocaleString('pt-BR', { maximumFractionDigits: 1 })} em {items.length} avaliações
+                            </span>
                         </div>
-                        <span>4.9/5 estrelas no Google</span>
+                    </div>
+                    <div className="hidden sm:flex gap-2">
+                        <button type="button" onClick={() => scroll(-1)} aria-label="Depoimentos anteriores" className="w-11 h-11 rounded-full border border-ink/20 flex items-center justify-center text-ink hover:bg-paper">
+                            <ChevronLeft className="w-5 h-5" />
+                        </button>
+                        <button type="button" onClick={() => scroll(1)} aria-label="Próximos depoimentos" className="w-11 h-11 rounded-full border border-ink/20 flex items-center justify-center text-ink hover:bg-paper">
+                            <ChevronRight className="w-5 h-5" />
+                        </button>
                     </div>
                 </div>
 
-                {/* Testimonials Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {testimonials.map((testimonial) => (
-                        <div
-                            key={testimonial.name}
-                            className="bg-white/5 backdrop-blur-sm border border-white/10 p-6 sm:p-8 rounded-2xl hover:bg-white/10 transition-colors group"
+                <ul
+                    ref={rail}
+                    className="flex gap-5 overflow-x-auto snap-x snap-mandatory no-scrollbar -mx-4 px-4 sm:mx-0 sm:px-0 pb-2"
+                >
+                    {items.map((t, i) => (
+                        <li
+                            key={t.id ?? `${t.name}-${i}`}
+                            className="snap-start shrink-0 w-[85%] sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-14px)] bg-paper rounded-md p-6 sm:p-7 flex flex-col"
                         >
-                            {/* Header */}
-                            <div className="flex items-center justify-between mb-4">
-                                <div className="flex items-center gap-3">
-                                    <div className="w-11 h-11 bg-espelhart-accent/20 text-espelhart-accent rounded-full flex items-center justify-center font-bold text-sm">
-                                        {getInitials(testimonial.name)}
-                                    </div>
-                                    <div>
-                                        <p className="font-semibold text-white text-sm">{testimonial.name}</p>
-                                        <p className="text-xs text-gray-500">{testimonial.date || 'Cliente'}</p>
-                                    </div>
-                                </div>
-                                <div className="flex text-yellow-400 gap-0.5">
-                                    {[...Array(testimonial.rating)].map((_, i) => (
-                                        <Star key={i} className="w-3.5 h-3.5 fill-current" />
-                                    ))}
-                                </div>
+                            <Stars value={Number(t.rating) || 0} />
+                            <blockquote className="mt-4 text-[16px] leading-relaxed text-ink flex-1">{t.text}</blockquote>
+                            <div className="mt-6 flex items-center gap-3">
+                                <span className="w-10 h-10 rounded-full bg-mist text-teal font-semibold text-sm flex items-center justify-center">
+                                    {initials(t.name)}
+                                </span>
+                                <span>
+                                    <span className="block text-sm font-semibold text-ink">{t.name}</span>
+                                    <span className="block text-xs text-muted">{t.date || 'Cliente'}</span>
+                                </span>
                             </div>
-
-                            {/* Text */}
-                            <p className="text-gray-300 text-sm italic leading-relaxed">
-                                &ldquo;{testimonial.text}&rdquo;
-                            </p>
-                        </div>
+                        </li>
                     ))}
-                </div>
+                </ul>
             </div>
         </section>
     );
