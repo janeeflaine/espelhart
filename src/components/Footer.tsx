@@ -14,6 +14,17 @@ const baseLinks = [
     { href: '/#orcamento', label: 'Pedir orçamento' },
 ];
 
+/** MEI legal names end with the owner's CPF; the footer shows only the name, title-cased. */
+function footerName(legalName: string) {
+    const name = legalName.replace(/\s*\d{3}\.?\d{3}\.?\d{3}-?\d{2}\s*$/, '').trim();
+    const lower = ['da', 'de', 'do', 'das', 'dos', 'e'];
+    return name
+        .toLowerCase()
+        .split(/\s+/)
+        .map((w, i) => (i > 0 && lower.includes(w) ? w : w.charAt(0).toUpperCase() + w.slice(1)))
+        .join(' ');
+}
+
 export default function Footer() {
     const settings = useSettings();
     const services = useServices();
@@ -102,7 +113,7 @@ export default function Footer() {
                         <p>{settings.footerText || `© ${new Date().getFullYear()} Espelhart Vidros e Esquadrias. Todos os direitos reservados.`}</p>
                         {(settings.companyLegalName || settings.cnpj) && (
                             <p>
-                                {settings.companyLegalName}
+                                {footerName(settings.companyLegalName)}
                                 {settings.companyLegalName && settings.cnpj && ', '}
                                 {settings.cnpj && `CNPJ ${settings.cnpj}`}
                             </p>
