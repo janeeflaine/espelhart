@@ -28,8 +28,6 @@ export default function Testimonials() {
     // Hidden until real testimonials are registered in the admin panel.
     if (items.length === 0) return null;
 
-    const average = items.reduce((sum, t) => sum + (Number(t.rating) || 0), 0) / items.length;
-
     const scroll = (dir: 1 | -1) => {
         const el = rail.current;
         if (!el) return;
@@ -45,14 +43,8 @@ export default function Testimonials() {
                         <h2 className="font-wide text-balance text-3xl sm:text-4xl font-bold text-ink leading-[1.08]">
                             {settings.testimonialsTitle}
                         </h2>
-                        <div className="mt-4 flex items-center gap-3 text-sm text-muted">
-                            <Stars value={average} />
-                            <span>
-                                Média {average.toLocaleString('pt-BR', { maximumFractionDigits: 1 })} em {items.length} avaliações
-                            </span>
-                        </div>
                     </div>
-                    <div className="hidden sm:flex gap-2">
+                    <div className={`gap-2 ${items.length > 3 ? 'hidden sm:flex' : 'hidden'}`}>
                         <button type="button" onClick={() => scroll(-1)} aria-label="Depoimentos anteriores" className="w-11 h-11 rounded-full border border-ink/20 flex items-center justify-center text-ink hover:bg-paper">
                             <ChevronLeft className="w-5 h-5" />
                         </button>
@@ -69,7 +61,7 @@ export default function Testimonials() {
                     {items.map((t, i) => (
                         <li
                             key={t.id ?? `${t.name}-${i}`}
-                            className="snap-start shrink-0 w-[85%] sm:w-[calc(50%-10px)] lg:w-[calc(33.333%-14px)] bg-paper rounded-md p-6 sm:p-7 flex flex-col"
+                            className={`snap-start shrink-0 w-[85%] sm:w-[calc(50%-10px)] ${items.length > 2 ? 'lg:w-[calc(33.333%-14px)]' : ''} bg-paper rounded-md p-6 sm:p-7 flex flex-col`}
                         >
                             <Stars value={Number(t.rating) || 0} />
                             <blockquote className="mt-4 text-[16px] leading-relaxed text-ink flex-1">{t.text}</blockquote>
