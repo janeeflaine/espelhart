@@ -1,138 +1,102 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { getSettings, SiteSettings } from '@/lib/firebaseAdmin';
-import { doc, setDoc } from 'firebase/firestore';
-import { db } from '@/lib/firebase';
-import { Save, CheckCircle, MonitorUp } from 'lucide-react';
-import { defaultSettings } from '@/lib/SettingsContext';
+import { Check } from 'lucide-react';
+import { PageHeader, Panel, TextInput, TextArea, ImageField, StringListEditor, SaveBar, LoadingState } from '../_ui';
+import { useSettingsEditor } from '../_useSettingsEditor';
+
+const FIELDS = ['heroBadge', 'heroTitle', 'heroSubtitle', 'heroImage', 'heroPromises'] as const;
 
 export default function AdminHeroPage() {
-    const [settings, setSettings] = useState<SiteSettings>(defaultSettings);
-    const [loading, setLoading] = useState(true);
-    const [saving, setSaving] = useState(false);
-    const [saved, setSaved] = useState(false);
-
-    useEffect(() => {
-        async function fetchSettings() {
-            try {
-                const data = await getSettings();
-                if (data) {
-                    setSettings({ ...defaultSettings, ...data });
-                }
-            } catch (error) {
-                console.error('Error:', error);
-            } finally {
-                setLoading(false);
-            }
-        }
-        fetchSettings();
-    }, []);
-
-    async function handleSave(e: React.FormEvent) {
-        e.preventDefault();
-        setSaving(true);
-        setSaved(false);
-        try {
-            await setDoc(doc(db, 'settings', 'general'), settings);
-            setSaved(true);
-            setTimeout(() => setSaved(false), 3000);
-        } catch (error) {
-            console.error('Error saving:', error);
-            alert('Erro ao salvar as configurações.');
-        } finally {
-            setSaving(false);
-        }
-    }
-
-    function updateField(field: keyof SiteSettings, value: string) {
-        setSettings((prev) => ({ ...prev, [field]: value }));
-    }
-
-    if (loading) {
-        return (
-            <div className="flex justify-center py-20">
-                <div className="w-8 h-8 border-4 border-espelhart-accent border-t-transparent rounded-full animate-spin" />
-            </div>
-        );
-    }
+    const { values, set, dirty, saving, save, discard, loading } = useSettingsEditor(FIELDS);
+    if (loading || !values) return <LoadingState />;
 
     return (
-        <div>
-            <div className="mb-8">
-                <h1 className="text-2xl sm:text-3xl font-bold text-espelhart-darkest">Topo do Site</h1>
-                <p className="text-gray-500 mt-1">Edite a primeira seção exibida quando um cliente abre o site.</p>
+        <>
+            <PageHeader
+                title="Topo do site"
+                description="É a primeira coisa que o cliente vê. Um título claro e uma boa foto de obra fazem a diferença."
+                siteAnchor=""
+            />
+
+            <div className="grid xl:grid-cols-[minmax(0,1fr)_minmax(0,1.05fr)] gap-6 items-start">
+                <div className="space-y-6">
+                    <Panel title="Textos">
+                        <div className="space-y-5">
+                            <TextInput label="Frase acima do título" value={values.heroBadge} onChange={(v) => set('heroBadge', v)} maxLength={60} />
+                            <TextArea
+                                label="Título principal"
+                                hint="Use Enter para quebrar a linha onde quiser."
+                                value={values.heroTitle}
+                                onChange={(v) => set('heroTitle', v)}
+                                rows={2}
+                                maxLength={70}
+                            />
+                            <TextArea label="Texto de apoio" value={values.heroSubtitle} onChange={(v) => set('heroSubtitle', v)} rows={3} maxLength={220} />
+                        </div>
+                    </Panel>
+
+                    <Panel title="Foto" description="Aparece dentro da janela de correr. Prefira fotos verticais de obras reais.">
+                        <ImageField label="Foto do topo" value={values.heroImage} onChange={(v) => set('heroImage', v)} folder="_site/hero" aspect="aspect-[5/4]" />
+                    </Panel>
+
+                    <Panel title="Garantias" description="Itens com ✓ abaixo dos botões. Até 4 ficam melhor.">
+                        <StringListEditor
+                            label="Itens"
+                            items={values.heroPromises}
+                            onChange={(v) => set('heroPromises', v)}
+                            addLabel="Adicionar item"
+                            placeholder="Ex.: Orçamento gratuito"
+                            max={6}
+                        />
+                    </Panel>
+                </div>
+
+                {/* Live preview */}
+                <div className="xl:sticky xl:top-24">
+                    <p className="mb-2 text-sm font-medium text-muted">Prévia ao vivo</p>
+                    <div className="rounded-lg border border-line overflow-hidden shadow-[0_20px_50px_-24px_rgba(12,35,41,0.35)] bg-mist">
+                        <div className="h-8 bg-paper border-b border-line flex items-center gap-1.5 px-3" aria-hidden="true">
+                            <span className="w-2.5 h-2.5 rounded-full bg-line" />
+                            <span className="w-2.5 h-2.5 rounded-full bg-line" />
+                            <span className="w-2.5 h-2.5 rounded-full bg-line" />
+                            <span className="ml-3 h-4 flex-1 max-w-[12rem] rounded bg-mist" />
+                        </div>
+                        <div className="p-5 sm:p-7 grid grid-cols-[1.1fr_0.9fr] gap-5 items-center">
+                            <div className="min-w-0">
+                                <p className="text-[10px] font-medium text-teal truncate">{values.heroBadge}</p>
+                                <p className="mt-2 font-wide font-bold text-ink text-[1.35rem] sm:text-[1.6rem] leading-[1.05] whitespace-pre-line break-words">
+                                    {values.heroTitle}
+                                </p>
+                                <p className="mt-3 text-[11px] leading-relaxed text-muted line-clamp-4">{values.heroSubtitle}</p>
+                                <div className="mt-4 flex gap-1.5">
+                                    <span className="rounded bg-ink px-2.5 py-1.5 text-[9px] font-semibold text-white">Pedir orçamento</span>
+                                    <span className="rounded bg-wa px-2.5 py-1.5 text-[9px] font-semibold text-ink">WhatsApp</span>
+                                </div>
+                                <ul className="mt-3 grid grid-cols-2 gap-1">
+                                    {values.heroPromises.filter(Boolean).map((p, i) => (
+                                        <li key={i} className="flex items-center gap-1 text-[9px] text-ink">
+                                            <Check className="w-2.5 h-2.5 text-teal shrink-0" aria-hidden="true" />
+                                            <span className="truncate">{p}</span>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </div>
+                            <div className="window-frame !p-1.5">
+                                <div className="relative aspect-[5/6] overflow-hidden bg-ink">
+                                    {values.heroImage && (
+                                        // eslint-disable-next-line @next/next/no-img-element
+                                        <img src={values.heroImage} alt="" className="absolute inset-0 w-full h-full object-cover" />
+                                    )}
+                                    <div className="window-sash window-sash--fixed !border-[4px]" aria-hidden="true" />
+                                    <div className="window-sash !left-[4%] !border-[4px]" aria-hidden="true" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
-            <form onSubmit={handleSave} className="space-y-8 max-w-3xl">
-                <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                    <div className="flex items-center gap-3 mb-6">
-                        <div className="w-10 h-10 bg-indigo-100 rounded-xl flex items-center justify-center">
-                            <MonitorUp className="w-5 h-5 text-indigo-600" />
-                        </div>
-                        <div>
-                            <h2 className="font-semibold text-espelhart-darkest">Textos Principais</h2>
-                            <p className="text-xs text-gray-400">Título e descrição principais do seu negócio</p>
-                        </div>
-                    </div>
-
-                    <div className="space-y-4">
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Pequena tag superior (Badge) </label>
-                            <input
-                                type="text"
-                                value={settings.heroBadge}
-                                onChange={(e) => updateField('heroBadge', e.target.value)}
-                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-base"
-                                placeholder="Ex: Referência em Vidraçaria"
-                            />
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Título Grande Principal</label>
-                            <textarea
-                                value={settings.heroTitle}
-                                onChange={(e) => updateField('heroTitle', e.target.value)}
-                                rows={2}
-                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-base resize-none"
-                                placeholder="Titúlo que mais chama a atenção..."
-                            />
-                            <p className="text-xs text-gray-400 mt-1">Dica: use Enter para quebrar a linha e manter um visual elegante.</p>
-                        </div>
-                        <div>
-                            <label className="block text-sm font-medium text-gray-700 mb-1">Subtítulo / Descrição Abaixo</label>
-                            <textarea
-                                value={settings.heroSubtitle}
-                                onChange={(e) => updateField('heroSubtitle', e.target.value)}
-                                rows={3}
-                                className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-base resize-none"
-                                placeholder="Uma pequena explicação dos seus serviços..."
-                            />
-                        </div>
-                    </div>
-                </div>
-
-                <div className="flex flex-col gap-2 text-sm text-gray-500 bg-blue-50/50 p-4 border border-blue-100 rounded-xl">
-                    <p>💡 <b>Nota:</b> Os números informativos no fim desta seção do seu site são puxados diretamente dos &quot;Números e Conquistas&quot; na tela de <b>Quem Somos</b>. Você pode editá-los lá e irão atualizar aqui também.</p>
-                </div>
-
-                {/* Save Button */}
-                <div className="flex flex-col sm:flex-row items-center gap-4">
-                    <button
-                        type="submit"
-                        disabled={saving}
-                        className="w-full sm:w-auto flex items-center justify-center gap-2 bg-espelhart-accent hover:bg-espelhart-medium text-white px-8 py-3 rounded-xl font-semibold transition-colors disabled:opacity-50"
-                    >
-                        <Save className="w-4 h-4" />
-                        {saving ? 'Salvando...' : 'Salvar Alterações'}
-                    </button>
-                    {saved && (
-                        <span className="flex items-center gap-2 text-green-600 text-sm font-medium animate-in fade-in slide-in-from-left-2">
-                            <CheckCircle className="w-4 h-4" />
-                            Salvo com sucesso!
-                        </span>
-                    )}
-                </div>
-            </form>
-        </div>
+            <SaveBar dirty={dirty} saving={saving} onSave={save} onDiscard={discard} />
+        </>
     );
 }

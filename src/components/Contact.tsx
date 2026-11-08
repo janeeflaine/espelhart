@@ -8,8 +8,6 @@ import { useServices } from '@/lib/useServices';
 import WhatsAppIcon from '@/components/WhatsAppIcon';
 
 const OTHER = 'Outro / ainda não sei';
-const propertyTypes = ['Casa', 'Apartamento', 'Comercial', 'Obra em construção'];
-const timings = ['O quanto antes', 'Nos próximos 30 dias', 'Só estou pesquisando'];
 
 function Chip({
     name,
@@ -67,7 +65,7 @@ export default function Contact() {
     const [sentUrl, setSentUrl] = useState<string | null>(null);
 
     const options = [...services.map((s) => s.title), OTHER];
-    const phone = settings.phone || '(61) 9817-9760';
+    const phone = settings.phone;
 
     const buildMessage = () => {
         const details = [
@@ -101,11 +99,10 @@ export default function Contact() {
             <div id="contato" className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[minmax(0,7fr)_minmax(0,4fr)] gap-12 lg:gap-16">
                 <div>
                     <h2 className="font-wide text-balance text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-ink leading-[1.08]">
-                        Peça seu orçamento em 1 minuto
+                        {settings.quoteTitle}
                     </h2>
                     <p className="mt-4 text-muted text-base sm:text-lg leading-relaxed max-w-xl">
-                        Responda o que souber. Ao enviar, o WhatsApp abre com seu pedido pronto e um especialista continua a conversa
-                        com você.
+                        {settings.quoteSubtitle}
                     </p>
 
                     {sentUrl ? (
@@ -170,7 +167,7 @@ export default function Contact() {
                                     <div>
                                         <p className="text-sm font-medium text-ink mb-2">Tipo de imóvel</p>
                                         <div className="flex flex-wrap gap-2">
-                                            {propertyTypes.map((o) => (
+                                            {settings.quotePropertyTypes.filter(Boolean).map((o) => (
                                                 <Chip key={o} name="imovel" value={o} checked={property === o} onChange={setProperty} />
                                             ))}
                                         </div>
@@ -204,7 +201,7 @@ export default function Contact() {
                                     <div>
                                         <p className="text-sm font-medium text-ink mb-2">Para quando?</p>
                                         <div className="flex flex-wrap gap-2">
-                                            {timings.map((o) => (
+                                            {settings.quoteTimings.filter(Boolean).map((o) => (
                                                 <Chip key={o} name="prazo" value={o} checked={timing === o} onChange={setTiming} />
                                             ))}
                                         </div>
@@ -303,8 +300,8 @@ export default function Contact() {
                                 <Clock className="w-5 h-5 text-teal-light shrink-0 mt-0.5" aria-hidden="true" />
                                 <span>
                                     <span className="block text-white/60 text-sm">Horário</span>
-                                    <span className="font-semibold">Seg a sex, 8h às 18h</span>
-                                    <span className="block font-semibold">Sábado, 8h às 12h</span>
+                                    <span className="block font-semibold">{settings.hoursWeek}</span>
+                                    {settings.hoursSaturday && <span className="block font-semibold">{settings.hoursSaturday}</span>}
                                 </span>
                             </li>
                         </ul>

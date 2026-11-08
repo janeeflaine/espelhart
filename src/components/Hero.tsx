@@ -5,8 +5,6 @@ import { useSettings, getWhatsAppUrl } from '@/lib/SettingsContext';
 import { useQuote } from '@/lib/QuoteContext';
 import WhatsAppIcon from '@/components/WhatsAppIcon';
 
-const promises = ['Orçamento gratuito', 'Medição no local', 'Peças sob medida', 'Garantia em todos os serviços'];
-
 export default function Hero() {
     const settings = useSettings();
     const { requestQuote } = useQuote();
@@ -50,7 +48,7 @@ export default function Hero() {
                     </div>
 
                     <ul className="mt-9 grid grid-cols-2 gap-x-6 gap-y-3 max-w-lg">
-                        {promises.map((p) => (
+                        {settings.heroPromises.filter(Boolean).map((p) => (
                             <li key={p} className="flex items-center gap-2 text-sm font-medium text-ink">
                                 <Check className="w-4 h-4 text-teal shrink-0" aria-hidden="true" />
                                 {p}
@@ -64,8 +62,8 @@ export default function Hero() {
                     <div className="window-frame">
                         <div className="relative aspect-[4/3] lg:aspect-[5/6] overflow-hidden rounded-[2px] bg-ink">
                             <img
-                                src="https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1100&q=80"
-                                alt="Sala ampla com grandes painéis de vidro e esquadrias de alumínio"
+                                src={settings.heroImage}
+                                alt="Projeto de vidros e esquadrias da Espelhart"
                                 className="absolute inset-0 w-full h-full object-cover"
                                 width={1100}
                                 height={1320}
@@ -80,7 +78,8 @@ export default function Hero() {
                     </div>
                     <div className="absolute -bottom-5 left-4 sm:-left-6 bg-paper rounded-md shadow-lg px-4 py-3 border border-line">
                         <p className="text-xs text-muted">Atendimento</p>
-                        <p className="text-sm font-semibold text-ink">Seg a sex 8h–18h, sáb 8h–12h</p>
+                        <p className="text-sm font-semibold text-ink">{settings.hoursWeek}</p>
+                        <p className="text-sm font-semibold text-ink">{settings.hoursSaturday}</p>
                     </div>
                 </div>
             </div>

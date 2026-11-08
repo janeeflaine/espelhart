@@ -21,7 +21,7 @@ export default function Footer() {
     const links = hasTestimonials
         ? [...baseLinks.slice(0, 3), { href: '/#depoimentos', label: 'Depoimentos' }, ...baseLinks.slice(3)]
         : baseLinks;
-    const phone = settings.phone || '(61) 9817-9760';
+    const phone = settings.phone;
 
     return (
         <footer className="bg-ink text-white pb-24 lg:pb-0">
@@ -30,7 +30,7 @@ export default function Footer() {
                     <div className="sm:col-span-2 lg:col-span-1">
                         <Logo tone="light" />
                         <p className="mt-5 text-white/65 text-[15px] leading-relaxed max-w-xs">
-                            Vidros e esquadrias de alumínio sob medida, com medição, fabricação e instalação feitas pela nossa equipe.
+                            {settings.footerDescription}
                         </p>
                         {(settings.instagram || settings.facebook) && (
                             <div className="mt-6 flex gap-3">
@@ -92,7 +92,7 @@ export default function Footer() {
                                 </li>
                             )}
                             {settings.address && <li className="whitespace-pre-line">{settings.address}</li>}
-                            <li>Seg a sex, 8h às 18h<br />Sábado, 8h às 12h</li>
+                            <li>{settings.hoursWeek}{settings.hoursSaturday && <><br />{settings.hoursSaturday}</>}</li>
                         </ul>
                     </div>
                 </div>

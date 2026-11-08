@@ -8,6 +8,8 @@ import {
     deleteDoc,
     query,
     orderBy,
+    setDoc,
+    writeBatch,
     Timestamp,
 } from 'firebase/firestore';
 import {
@@ -17,6 +19,7 @@ import {
     deleteObject,
 } from 'firebase/storage';
 import { db, storage } from './firebase';
+import type { SiteSettings } from './siteSettings';
 
 // ==================== TYPES ====================
 
@@ -51,26 +54,7 @@ export interface FAQ {
     createdAt?: Timestamp;
 }
 
-export interface SiteSettings {
-    whatsappNumber: string;
-    whatsappMessage: string;
-    instagram: string;
-    facebook: string;
-    aboutTitle: string;
-    aboutText: string;
-    aboutStats: { label: string; value: string }[];
-    aboutHighlights: string[];
-    footerText: string;
-    phone: string;
-    email: string;
-    address: string;
-    heroBadge: string;
-    heroTitle: string;
-    heroSubtitle: string;
-    featuresTitle: string;
-    featuresSubtitle: string;
-    features: { title: string; description: string }[];
-}
+export type { SiteSettings } from './siteSettings';
 
 // ==================== SERVICES ====================
 
@@ -156,14 +140,24 @@ export async function deleteFAQ(id: string): Promise<void> {
 
 // ==================== SETTINGS ====================
 
-export async function getSettings(): Promise<SiteSettings | null> {
+export async function getSettings(): Promise<Partial<SiteSettings> | null> {
     const docRef = doc(db, 'settings', 'general');
     const docSnap = await getDoc(docRef);
-    return docSnap.exists() ? docSnap.data() as SiteSettings : null;
+    return docSnap.exists() ? (docSnap.data() as Partial<SiteSettings>) : null;
 }
 
+/** Saves only the given fields; creates the document if it does not exist yet. */
 export async function updateSettings(data: Partial<SiteSettings>): Promise<void> {
-    await updateDoc(doc(db, 'settings', 'general'), data);
+    await setDoc(doc(db, 'settings', 'general'), data, { merge: true });
+}
+
+// ==================== ORDERING ====================
+
+/** Persists list order (index → `order` field) in one batch. */
+export async function saveOrder(collectionName: 'services' | 'faqs', ids: string[]): Promise<void> {
+    const batch = writeBatch(db);
+    ids.forEach((id, index) => batch.update(doc(db, collectionName, id), { order: index }));
+    await batch.commit();
 }
 
 // ==================== FILE UPLOAD ====================

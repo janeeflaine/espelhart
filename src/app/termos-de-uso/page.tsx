@@ -140,7 +140,7 @@ export default function TermsOfUsePage() {
                                 </div>
                                 <p className="text-gray-600 leading-relaxed">
                                     Estes Termos de Uso são regidos pelas leis da República Federativa do Brasil. Quaisquer disputas decorrentes
-                                    destes termos serão resolvidas no foro da comarca de São Paulo/SP, com exclusão de qualquer outro.
+                                    destes termos serão resolvidas no foro de Brasília/DF, com exclusão de qualquer outro.
                                 </p>
                             </div>
 

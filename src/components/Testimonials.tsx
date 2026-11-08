@@ -3,6 +3,7 @@
 import { useRef } from 'react';
 import { Star, ChevronLeft, ChevronRight } from 'lucide-react';
 import { useTestimonials } from '@/lib/useTestimonials';
+import { useSettings } from '@/lib/SettingsContext';
 
 function initials(name: string) {
     return name.split(' ').filter(Boolean).map((n) => n[0]).join('').slice(0, 2).toUpperCase();
@@ -21,6 +22,7 @@ function Stars({ value, size = 'w-4 h-4' }: { value: number; size?: string }) {
 
 export default function Testimonials() {
     const items = useTestimonials();
+    const settings = useSettings();
     const rail = useRef<HTMLUListElement>(null);
 
     // Hidden until real testimonials are registered in the admin panel.
@@ -41,7 +43,7 @@ export default function Testimonials() {
                 <div className="flex flex-col sm:flex-row sm:items-end justify-between gap-6 mb-10">
                     <div>
                         <h2 className="font-wide text-balance text-3xl sm:text-4xl font-bold text-ink leading-[1.08]">
-                            Quem já instalou, recomenda
+                            {settings.testimonialsTitle}
                         </h2>
                         <div className="mt-4 flex items-center gap-3 text-sm text-muted">
                             <Stars value={average} />

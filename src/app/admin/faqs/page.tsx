@@ -1,195 +1,187 @@
 'use client';
 
-import { useState, useEffect } from 'react';
-import { getFAQs, addFAQ, updateFAQ, deleteFAQ, FAQ as FAQType } from '@/lib/firebaseAdmin';
-import { Plus, Pencil, Trash2, X, HelpCircle, GripVertical } from 'lucide-react';
+import { useCallback, useEffect, useState } from 'react';
+import { ArrowDown, ArrowUp, HelpCircle, Pencil, Plus, Trash2 } from 'lucide-react';
+import { addFAQ, deleteFAQ, getFAQs, saveOrder, updateFAQ, type FAQ } from '@/lib/firebaseAdmin';
+import {
+    Button,
+    Drawer,
+    EmptyState,
+    IconButton,
+    LoadingState,
+    PageHeader,
+    Panel,
+    SaveBar,
+    TextArea,
+    TextInput,
+    useConfirm,
+    useToast,
+} from '../_ui';
+import { useSettingsEditor } from '../_useSettingsEditor';
 
-export default function AdminFAQsPage() {
-    const [faqs, setFaqs] = useState<FAQType[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [showForm, setShowForm] = useState(false);
-    const [editingId, setEditingId] = useState<string | null>(null);
+type Draft = Pick<FAQ, 'question' | 'answer'>;
+
+export default function AdminFaqsPage() {
+    const toast = useToast();
+    const confirm = useConfirm();
+    const section = useSettingsEditor(['faqTitle', 'faqSubtitle'] as const);
+    const [items, setItems] = useState<FAQ[] | null>(null);
+    const [editing, setEditing] = useState<{ id: string | null; draft: Draft } | null>(null);
     const [saving, setSaving] = useState(false);
 
-    const [question, setQuestion] = useState('');
-    const [answer, setAnswer] = useState('');
-    const [order, setOrder] = useState(0);
-
-    useEffect(() => {
-        fetchFAQs();
+    const load = useCallback(async () => {
+        try {
+            setItems(await getFAQs());
+        } catch (e) {
+            console.error(e);
+            setItems([]);
+            toast.error('Não foi possível carregar as dúvidas.');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    async function fetchFAQs() {
-        try {
-            const data = await getFAQs();
-            setFaqs(data);
-        } catch (error) {
-            console.error('Error:', error);
-        } finally {
-            setLoading(false);
+    useEffect(() => {
+        load();
+    }, [load]);
+
+    const closeDrawer = useCallback(() => setEditing(null), []);
+
+    if (!items || section.loading || !section.values) return <LoadingState />;
+
+    const setDraft = (patch: Partial<Draft>) => setEditing((e) => (e ? { ...e, draft: { ...e.draft, ...patch } } : e));
+
+    const submit = async () => {
+        if (!editing) return;
+        const { id, draft } = editing;
+        if (!draft.question.trim() || !draft.answer.trim()) {
+            toast.error('Preencha a pergunta e a resposta.');
+            return;
         }
-    }
-
-    function resetForm() {
-        setQuestion('');
-        setAnswer('');
-        setOrder(0);
-        setEditingId(null);
-        setShowForm(false);
-    }
-
-    function handleEdit(faq: FAQType) {
-        setQuestion(faq.question);
-        setAnswer(faq.answer);
-        setOrder(faq.order || 0);
-        setEditingId(faq.id || null);
-        setShowForm(true);
-    }
-
-    async function handleSubmit(e: React.FormEvent) {
-        e.preventDefault();
         setSaving(true);
         try {
-            const data = { question, answer, order };
-            if (editingId) {
-                await updateFAQ(editingId, data);
-            } else {
-                await addFAQ(data);
-            }
-            resetForm();
-            await fetchFAQs();
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Erro ao salvar FAQ.');
+            if (id) await updateFAQ(id, draft);
+            else await addFAQ({ ...draft, order: items.length });
+            toast.success(id ? 'Dúvida atualizada.' : 'Dúvida publicada no site.');
+            setEditing(null);
+            await load();
+        } catch (e) {
+            console.error(e);
+            toast.error('Não foi possível salvar.');
         } finally {
             setSaving(false);
         }
-    }
+    };
 
-    async function handleDelete(id: string) {
-        if (!confirm('Excluir esta FAQ?')) return;
+    const remove = async (f: FAQ) => {
+        const ok = await confirm({ title: 'Excluir esta dúvida?', description: f.question });
+        if (!ok || !f.id) return;
         try {
-            await deleteFAQ(id);
-            await fetchFAQs();
-        } catch (error) {
-            console.error('Error:', error);
+            await deleteFAQ(f.id);
+            toast.success('Dúvida excluída.');
+            await load();
+        } catch (e) {
+            console.error(e);
+            toast.error('Não foi possível excluir.');
         }
-    }
+    };
 
-    if (loading) {
-        return (
-            <div className="flex justify-center py-20">
-                <div className="w-8 h-8 border-4 border-espelhart-accent border-t-transparent rounded-full animate-spin" />
-            </div>
-        );
-    }
+    const move = async (from: number, to: number) => {
+        const next = [...items];
+        const [it] = next.splice(from, 1);
+        next.splice(to, 0, it);
+        setItems(next);
+        try {
+            await saveOrder('faqs', next.map((f) => f.id!).filter(Boolean));
+        } catch (e) {
+            console.error(e);
+            toast.error('Não foi possível salvar a nova ordem.');
+            load();
+        }
+    };
+
+    const newButton = (
+        <Button icon={<Plus className="w-4 h-4" />} onClick={() => setEditing({ id: null, draft: { question: '', answer: '' } })}>
+            Nova dúvida
+        </Button>
+    );
 
     return (
-        <div>
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
-                <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold text-espelhart-darkest">FAQs</h1>
-                    <p className="text-gray-500 mt-1">Gerencie as perguntas frequentes</p>
-                </div>
-                <button
-                    onClick={() => { resetForm(); setShowForm(true); }}
-                    className="flex items-center gap-2 bg-espelhart-accent hover:bg-espelhart-medium text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors"
-                >
-                    <Plus className="w-4 h-4" />
-                    Nova FAQ
-                </button>
+        <>
+            <PageHeader
+                title="Dúvidas"
+                description="Responda aqui o que os clientes mais perguntam no WhatsApp. A primeira já aparece aberta no site."
+                siteAnchor="faq"
+                actions={newButton}
+            />
+
+            <div className="space-y-6">
+                {items.length === 0 ? (
+                    <EmptyState
+                        icon={<HelpCircle className="w-6 h-6" />}
+                        title="Nenhuma dúvida cadastrada"
+                        text="Enquanto a lista estiver vazia, o site mostra perguntas de exemplo."
+                        action={newButton}
+                    />
+                ) : (
+                    <ol className="rounded-lg bg-paper border border-line/80 divide-y divide-line">
+                        {items.map((f, i) => (
+                            <li key={f.id} className="flex flex-wrap sm:flex-nowrap items-start gap-x-3 gap-y-1 p-4 sm:px-5">
+                                <span className="mt-0.5 w-6 shrink-0 text-sm font-semibold text-muted tabular-nums">{i + 1}.</span>
+                                <div className="min-w-0 flex-1">
+                                    <p className="font-semibold text-ink">{f.question}</p>
+                                    <p className="mt-1 text-sm text-muted line-clamp-2">{f.answer}</p>
+                                </div>
+                                <div className="flex shrink-0 w-full sm:w-auto justify-end -mr-2 sm:mr-0">
+                                    <IconButton label="Mover para cima" disabled={i === 0} onClick={() => move(i, i - 1)}>
+                                        <ArrowUp className="w-4 h-4" />
+                                    </IconButton>
+                                    <IconButton label="Mover para baixo" disabled={i === items.length - 1} onClick={() => move(i, i + 1)}>
+                                        <ArrowDown className="w-4 h-4" />
+                                    </IconButton>
+                                    <IconButton label="Editar" onClick={() => setEditing({ id: f.id ?? null, draft: { question: f.question, answer: f.answer } })}>
+                                        <Pencil className="w-4 h-4" />
+                                    </IconButton>
+                                    <IconButton label="Excluir" tone="danger" onClick={() => remove(f)}>
+                                        <Trash2 className="w-4 h-4" />
+                                    </IconButton>
+                                </div>
+                            </li>
+                        ))}
+                    </ol>
+                )}
+
+                <Panel title="Cabeçalho da seção">
+                    <div className="space-y-5 max-w-2xl">
+                        <TextInput label="Título" value={section.values.faqTitle} onChange={(v) => section.set('faqTitle', v)} maxLength={60} />
+                        <TextArea label="Texto de apoio" value={section.values.faqSubtitle} onChange={(v) => section.set('faqSubtitle', v)} rows={2} maxLength={160} />
+                    </div>
+                </Panel>
             </div>
 
-            {/* Form Modal */}
-            {showForm && (
-                <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-                    <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg">
-                        <div className="p-6 border-b border-gray-200 flex items-center justify-between">
-                            <h2 className="text-xl font-bold text-espelhart-darkest">
-                                {editingId ? 'Editar FAQ' : 'Nova FAQ'}
-                            </h2>
-                            <button onClick={resetForm} className="text-gray-400 hover:text-gray-600">
-                                <X className="w-5 h-5" />
-                            </button>
-                        </div>
-                        <form onSubmit={handleSubmit} className="p-6 space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Pergunta *</label>
-                                <input
-                                    type="text"
-                                    value={question}
-                                    onChange={(e) => setQuestion(e.target.value)}
-                                    required
-                                    placeholder="Ex: Qual o prazo de entrega?"
-                                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Resposta *</label>
-                                <textarea
-                                    value={answer}
-                                    onChange={(e) => setAnswer(e.target.value)}
-                                    required
-                                    rows={4}
-                                    placeholder="Responda de forma clara e completa..."
-                                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm resize-none"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Ordem de exibição</label>
-                                <input
-                                    type="number"
-                                    value={order}
-                                    onChange={(e) => setOrder(Number(e.target.value))}
-                                    min={0}
-                                    className="w-32 px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm"
-                                />
-                            </div>
-                            <div className="flex gap-3 pt-2">
-                                <button
-                                    type="submit"
-                                    disabled={saving}
-                                    className="flex-1 bg-espelhart-accent hover:bg-espelhart-medium text-white py-3 rounded-xl font-semibold transition-colors disabled:opacity-50"
-                                >
-                                    {saving ? 'Salvando...' : editingId ? 'Salvar' : 'Criar'}
-                                </button>
-                                <button type="button" onClick={resetForm} className="px-6 py-3 border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors font-medium">
-                                    Cancelar
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            )}
+            <Drawer
+                open={!!editing}
+                title={editing?.id ? 'Editar dúvida' : 'Nova dúvida'}
+                onClose={closeDrawer}
+                footer={
+                    <>
+                        <Button variant="secondary" onClick={closeDrawer}>
+                            Cancelar
+                        </Button>
+                        <Button onClick={submit} loading={saving}>
+                            {editing?.id ? 'Salvar e publicar' : 'Publicar dúvida'}
+                        </Button>
+                    </>
+                }
+            >
+                {editing && (
+                    <>
+                        <TextInput label="Pergunta" value={editing.draft.question} onChange={(v) => setDraft({ question: v })} maxLength={120} />
+                        <TextArea label="Resposta" value={editing.draft.answer} onChange={(v) => setDraft({ answer: v })} rows={7} maxLength={800} />
+                    </>
+                )}
+            </Drawer>
 
-            {/* List */}
-            {faqs.length === 0 ? (
-                <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
-                    <HelpCircle className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold text-gray-600 mb-2">Nenhuma FAQ cadastrada</h3>
-                    <p className="text-gray-400 text-sm">Adicione perguntas frequentes dos seus clientes.</p>
-                </div>
-            ) : (
-                <div className="space-y-3">
-                    {faqs.map((faq) => (
-                        <div key={faq.id} className="bg-white rounded-xl p-5 shadow-sm border border-gray-100 flex items-start gap-4">
-                            <GripVertical className="w-5 h-5 text-gray-300 mt-1 shrink-0" />
-                            <div className="flex-1 min-w-0">
-                                <p className="font-semibold text-espelhart-darkest mb-1">{faq.question}</p>
-                                <p className="text-sm text-gray-500 line-clamp-2">{faq.answer}</p>
-                            </div>
-                            <div className="flex gap-2 shrink-0">
-                                <button onClick={() => handleEdit(faq)} className="text-gray-400 hover:text-espelhart-accent">
-                                    <Pencil className="w-4 h-4" />
-                                </button>
-                                <button onClick={() => handleDelete(faq.id!)} className="text-gray-400 hover:text-red-500">
-                                    <Trash2 className="w-4 h-4" />
-                                </button>
-                            </div>
-                        </div>
-                    ))}
-                </div>
-            )}
-        </div>
+            <SaveBar dirty={section.dirty} saving={section.saving} onSave={section.save} onDiscard={section.discard} />
+        </>
     );
 }

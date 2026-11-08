@@ -72,7 +72,7 @@ const jsonLd = {
   image: 'https://espelhart.com.br/opengraph-image',
   '@id': 'https://espelhart.com.br',
   url: 'https://espelhart.com.br',
-  telephone: '+55-61-9817-9760',
+  telephone: '+55-61-99817-9760',
   description:
     'Vidraçaria de alto padrão especializada em box para banheiro, esquadrias de alumínio, guarda-corpo de vidro e vidros temperados em Valparaíso de Goiás e região.',
   address: {

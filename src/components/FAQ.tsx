@@ -46,10 +46,10 @@ export default function FAQ() {
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-[minmax(0,4fr)_minmax(0,7fr)] gap-10 lg:gap-16">
                 <div>
                     <h2 className="font-wide text-balance text-3xl sm:text-4xl font-bold text-ink leading-[1.08]">
-                        Dúvidas frequentes
+                        {settings.faqTitle}
                     </h2>
                     <p className="mt-4 text-muted text-base sm:text-lg leading-relaxed">
-                        Não encontrou o que procurava? Pergunte direto para a nossa equipe.
+                        {settings.faqSubtitle}
                     </p>
                     <a
                         href={whatsappUrl}

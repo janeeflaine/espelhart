@@ -3,9 +3,11 @@
 import { useState } from 'react';
 import { useServices } from '@/lib/useServices';
 import { useQuote } from '@/lib/QuoteContext';
+import { useSettings } from '@/lib/SettingsContext';
 
 export default function ServicesGrid() {
     const services = useServices();
+    const settings = useSettings();
     const { requestQuote } = useQuote();
     const [selected, setSelected] = useState<string | null>(null);
     const [photo, setPhoto] = useState<string | null>(null);
@@ -29,10 +31,10 @@ export default function ServicesGrid() {
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
                 <div className="max-w-2xl mb-10 lg:mb-14">
                     <h2 className="font-wide text-balance text-3xl sm:text-4xl lg:text-[2.75rem] font-bold text-ink leading-[1.08]">
-                        O que fazemos para sua casa ou empresa
+                        {settings.servicesTitle}
                     </h2>
                     <p className="mt-4 text-muted text-base sm:text-lg leading-relaxed">
-                        Escolha um serviço para ver detalhes e fotos. Cada peça é medida, cortada e instalada pela nossa equipe.
+                        {settings.servicesSubtitle}
                     </p>
                 </div>
 

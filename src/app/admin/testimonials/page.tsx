@@ -1,227 +1,227 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { Eye, EyeOff, MessageSquareQuote, Pencil, Plus, Star, Trash2 } from 'lucide-react';
+import { addTestimonial, deleteTestimonial, getTestimonials, updateTestimonial, type Testimonial } from '@/lib/firebaseAdmin';
 import {
-    getTestimonials,
-    addTestimonial,
-    updateTestimonial,
-    deleteTestimonial,
-    Testimonial,
-} from '@/lib/firebaseAdmin';
-import { Plus, Pencil, Trash2, X, Star, MessageSquareQuote } from 'lucide-react';
+    Button,
+    Drawer,
+    EmptyState,
+    Field,
+    IconButton,
+    LoadingState,
+    PageHeader,
+    Panel,
+    SaveBar,
+    TextArea,
+    TextInput,
+    useConfirm,
+    useToast,
+} from '../_ui';
+import { useSettingsEditor } from '../_useSettingsEditor';
+
+type Draft = Pick<Testimonial, 'name' | 'text' | 'rating' | 'date'>;
+const emptyDraft: Draft = { name: '', text: '', rating: 5, date: '' };
+
+function StarPicker({ value, onChange }: { value: number; onChange: (v: number) => void }) {
+    return (
+        <Field label="Nota">
+            <div role="radiogroup" aria-label="Nota" className="flex gap-1">
+                {[1, 2, 3, 4, 5].map((n) => (
+                    <button
+                        key={n}
+                        type="button"
+                        role="radio"
+                        aria-checked={value === n}
+                        aria-label={`${n} estrela${n > 1 ? 's' : ''}`}
+                        onClick={() => onChange(n)}
+                        className="p-1 rounded text-[#E8A33D] hover:scale-110 transition-transform"
+                    >
+                        <Star className={`w-7 h-7 ${n <= value ? 'fill-current' : 'opacity-30'}`} />
+                    </button>
+                ))}
+            </div>
+        </Field>
+    );
+}
 
 export default function AdminTestimonialsPage() {
-    const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-    const [loading, setLoading] = useState(true);
-    const [showForm, setShowForm] = useState(false);
-    const [editingId, setEditingId] = useState<string | null>(null);
+    const toast = useToast();
+    const confirm = useConfirm();
+    const section = useSettingsEditor(['testimonialsTitle'] as const);
+    const [items, setItems] = useState<Testimonial[] | null>(null);
+    const [editing, setEditing] = useState<{ id: string | null; draft: Draft } | null>(null);
     const [saving, setSaving] = useState(false);
 
-    const [name, setName] = useState('');
-    const [text, setText] = useState('');
-    const [rating, setRating] = useState(5);
-    const [date, setDate] = useState('');
-
-    useEffect(() => {
-        fetchTestimonials();
+    const load = useCallback(async () => {
+        try {
+            setItems(await getTestimonials());
+        } catch (e) {
+            console.error(e);
+            setItems([]);
+            toast.error('Não foi possível carregar os depoimentos.');
+        }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
-    async function fetchTestimonials() {
-        try {
-            const data = await getTestimonials();
-            setTestimonials(data);
-        } catch (error) {
-            console.error('Error:', error);
-        } finally {
-            setLoading(false);
+    useEffect(() => {
+        load();
+    }, [load]);
+
+    const closeDrawer = useCallback(() => setEditing(null), []);
+
+    if (!items || section.loading || !section.values) return <LoadingState />;
+
+    const setDraft = (patch: Partial<Draft>) => setEditing((e) => (e ? { ...e, draft: { ...e.draft, ...patch } } : e));
+
+    const submit = async () => {
+        if (!editing) return;
+        const { id, draft } = editing;
+        if (!draft.name.trim() || !draft.text.trim()) {
+            toast.error('Preencha o nome do cliente e o depoimento.');
+            return;
         }
-    }
-
-    function resetForm() {
-        setName('');
-        setText('');
-        setRating(5);
-        setDate('');
-        setEditingId(null);
-        setShowForm(false);
-    }
-
-    function handleEdit(t: Testimonial) {
-        setName(t.name);
-        setText(t.text);
-        setRating(t.rating);
-        setDate(t.date || '');
-        setEditingId(t.id || null);
-        setShowForm(true);
-    }
-
-    async function handleSubmit(e: React.FormEvent) {
-        e.preventDefault();
         setSaving(true);
         try {
-            const data = { name, text, rating, date };
-            if (editingId) {
-                await updateTestimonial(editingId, data);
-            } else {
-                await addTestimonial(data);
-            }
-            resetForm();
-            await fetchTestimonials();
-        } catch (error) {
-            console.error('Error:', error);
-            alert('Erro ao salvar depoimento.');
+            if (id) await updateTestimonial(id, draft);
+            else await addTestimonial(draft);
+            toast.success(id ? 'Depoimento atualizado.' : 'Depoimento publicado no site.');
+            setEditing(null);
+            await load();
+        } catch (e) {
+            console.error(e);
+            toast.error('Não foi possível salvar o depoimento.');
         } finally {
             setSaving(false);
         }
-    }
+    };
 
-    async function handleDelete(id: string) {
-        if (!confirm('Excluir este depoimento?')) return;
+    const remove = async (t: Testimonial) => {
+        const ok = await confirm({
+            title: `Excluir o depoimento de ${t.name}?`,
+            description: items.length === 1 ? 'É o último depoimento: a seção vai sumir do site.' : 'Esta ação não pode ser desfeita.',
+        });
+        if (!ok || !t.id) return;
         try {
-            await deleteTestimonial(id);
-            await fetchTestimonials();
-        } catch (error) {
-            console.error('Error:', error);
+            await deleteTestimonial(t.id);
+            toast.success('Depoimento excluído.');
+            await load();
+        } catch (e) {
+            console.error(e);
+            toast.error('Não foi possível excluir.');
         }
-    }
+    };
 
-    if (loading) {
-        return (
-            <div className="flex justify-center py-20">
-                <div className="w-8 h-8 border-4 border-espelhart-accent border-t-transparent rounded-full animate-spin" />
-            </div>
-        );
-    }
+    const visible = items.length > 0;
+    const newButton = (
+        <Button icon={<Plus className="w-4 h-4" />} onClick={() => setEditing({ id: null, draft: { ...emptyDraft } })}>
+            Novo depoimento
+        </Button>
+    );
 
     return (
-        <div>
-            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 mb-8">
-                <div>
-                    <h1 className="text-2xl sm:text-3xl font-bold text-espelhart-darkest">Depoimentos</h1>
-                    <p className="text-gray-500 mt-1">Gerencie os depoimentos exibidos no site</p>
-                </div>
-                <button
-                    onClick={() => { resetForm(); setShowForm(true); }}
-                    className="flex items-center gap-2 bg-espelhart-accent hover:bg-espelhart-medium text-white px-5 py-2.5 rounded-xl font-semibold text-sm transition-colors"
-                >
-                    <Plus className="w-4 h-4" />
-                    Novo Depoimento
-                </button>
+        <>
+            <PageHeader
+                title="Depoimentos"
+                description="Avaliações reais de clientes. Peça permissão antes de publicar o nome de alguém."
+                siteAnchor={visible ? 'depoimentos' : undefined}
+                actions={newButton}
+            />
+
+            <div
+                className={`mb-6 flex items-start gap-3 rounded-lg px-4 py-3 text-sm ${
+                    visible ? 'bg-edge/30 text-ink' : 'bg-[#E8A33D]/15 text-ink'
+                }`}
+            >
+                {visible ? <Eye className="w-5 h-5 shrink-0 text-teal" aria-hidden="true" /> : <EyeOff className="w-5 h-5 shrink-0 text-[#A86A12]" aria-hidden="true" />}
+                <p>
+                    {visible
+                        ? `A seção está visível no site com ${items.length} depoimento${items.length > 1 ? 's' : ''}.`
+                        : 'A seção está escondida no site. Ela aparece assim que você publicar o primeiro depoimento.'}
+                </p>
             </div>
 
-            {/* Form Modal */}
-            {showForm && (
-                <div className="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4">
-                    <div className="bg-white rounded-2xl shadow-2xl w-full max-w-lg">
-                        <div className="p-6 border-b border-gray-200 flex items-center justify-between">
-                            <h2 className="text-xl font-bold text-espelhart-darkest">
-                                {editingId ? 'Editar Depoimento' : 'Novo Depoimento'}
-                            </h2>
-                            <button onClick={resetForm} className="text-gray-400 hover:text-gray-600">
-                                <X className="w-5 h-5" />
-                            </button>
-                        </div>
-                        <form onSubmit={handleSubmit} className="p-6 space-y-4">
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Nome do Cliente *</label>
-                                <input
-                                    type="text"
-                                    value={name}
-                                    onChange={(e) => setName(e.target.value)}
-                                    required
-                                    placeholder="Ex: Maria Silva"
-                                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm"
-                                />
-                            </div>
-                            <div>
-                                <label className="block text-sm font-medium text-gray-700 mb-1">Depoimento *</label>
-                                <textarea
-                                    value={text}
-                                    onChange={(e) => setText(e.target.value)}
-                                    required
-                                    rows={3}
-                                    placeholder="O que o cliente disse..."
-                                    className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm resize-none"
-                                />
-                            </div>
-                            <div className="flex gap-4">
-                                <div className="flex-1">
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Avaliação</label>
-                                    <div className="flex gap-1">
-                                        {[1, 2, 3, 4, 5].map((star) => (
-                                            <button
-                                                key={star}
-                                                type="button"
-                                                onClick={() => setRating(star)}
-                                                className={`${rating >= star ? 'text-yellow-400' : 'text-gray-300'}`}
-                                            >
-                                                <Star className="w-6 h-6 fill-current" />
-                                            </button>
-                                        ))}
+            <div className="space-y-6">
+                {items.length === 0 ? (
+                    <EmptyState
+                        icon={<MessageSquareQuote className="w-6 h-6" />}
+                        title="Nenhum depoimento ainda"
+                        text="Copie avaliações do Google ou mensagens de clientes satisfeitos (com a permissão deles)."
+                        action={newButton}
+                    />
+                ) : (
+                    <ul className="grid sm:grid-cols-2 gap-3">
+                        {items.map((t) => (
+                            <li key={t.id} className="flex flex-col rounded-lg bg-paper border border-line/80 p-5">
+                                <div className="flex text-[#E8A33D]" aria-label={`${t.rating} de 5 estrelas`}>
+                                    {Array.from({ length: 5 }, (_, i) => (
+                                        <Star key={i} className={`w-4 h-4 ${i < t.rating ? 'fill-current' : 'opacity-25'}`} aria-hidden="true" />
+                                    ))}
+                                </div>
+                                <p className="mt-3 text-[15px] text-ink leading-relaxed line-clamp-4 flex-1">{t.text}</p>
+                                <div className="mt-4 flex items-center justify-between gap-2">
+                                    <div className="min-w-0">
+                                        <p className="text-sm font-semibold text-ink truncate">{t.name}</p>
+                                        {t.date && <p className="text-xs text-muted">{t.date}</p>}
+                                    </div>
+                                    <div className="flex">
+                                        <IconButton
+                                            label="Editar"
+                                            onClick={() =>
+                                                setEditing({ id: t.id ?? null, draft: { name: t.name, text: t.text, rating: t.rating || 5, date: t.date || '' } })
+                                            }
+                                        >
+                                            <Pencil className="w-4 h-4" />
+                                        </IconButton>
+                                        <IconButton label="Excluir" tone="danger" onClick={() => remove(t)}>
+                                            <Trash2 className="w-4 h-4" />
+                                        </IconButton>
                                     </div>
                                 </div>
-                                <div className="flex-1">
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">Data (ex: Há 1 mês)</label>
-                                    <input
-                                        type="text"
-                                        value={date}
-                                        onChange={(e) => setDate(e.target.value)}
-                                        placeholder="Há 2 semanas"
-                                        className="w-full px-4 py-3 border border-gray-200 rounded-xl focus:ring-2 focus:ring-espelhart-accent focus:border-transparent text-sm"
-                                    />
-                                </div>
-                            </div>
-                            <div className="flex gap-3 pt-2">
-                                <button
-                                    type="submit"
-                                    disabled={saving}
-                                    className="flex-1 bg-espelhart-accent hover:bg-espelhart-medium text-white py-3 rounded-xl font-semibold transition-colors disabled:opacity-50"
-                                >
-                                    {saving ? 'Salvando...' : editingId ? 'Salvar' : 'Criar'}
-                                </button>
-                                <button type="button" onClick={resetForm} className="px-6 py-3 border border-gray-200 rounded-xl text-gray-600 hover:bg-gray-50 transition-colors font-medium">
-                                    Cancelar
-                                </button>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            )}
+                            </li>
+                        ))}
+                    </ul>
+                )}
 
-            {/* List */}
-            {testimonials.length === 0 ? (
-                <div className="text-center py-20 bg-white rounded-2xl border border-gray-100">
-                    <MessageSquareQuote className="w-16 h-16 text-gray-300 mx-auto mb-4" />
-                    <h3 className="text-lg font-semibold text-gray-600 mb-2">Nenhum depoimento</h3>
-                    <p className="text-gray-400 text-sm">Adicione depoimentos de seus clientes.</p>
-                </div>
-            ) : (
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    {testimonials.map((t) => (
-                        <div key={t.id} className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100">
-                            <div className="flex justify-between items-start mb-3">
-                                <div>
-                                    <p className="font-semibold text-espelhart-darkest">{t.name}</p>
-                                    <div className="flex text-yellow-400 gap-0.5 mt-1">
-                                        {[...Array(t.rating)].map((_, i) => (
-                                            <Star key={i} className="w-3.5 h-3.5 fill-current" />
-                                        ))}
-                                    </div>
-                                </div>
-                                <div className="flex gap-2">
-                                    <button onClick={() => handleEdit(t)} className="text-gray-400 hover:text-espelhart-accent">
-                                        <Pencil className="w-4 h-4" />
-                                    </button>
-                                    <button onClick={() => handleDelete(t.id!)} className="text-gray-400 hover:text-red-500">
-                                        <Trash2 className="w-4 h-4" />
-                                    </button>
-                                </div>
-                            </div>
-                            <p className="text-gray-600 text-sm italic">&ldquo;{t.text}&rdquo;</p>
-                        </div>
-                    ))}
-                </div>
-            )}
-        </div>
+                <Panel title="Título da seção">
+                    <div className="max-w-2xl">
+                        <TextInput label="Título" value={section.values.testimonialsTitle} onChange={(v) => section.set('testimonialsTitle', v)} maxLength={60} />
+                    </div>
+                </Panel>
+            </div>
+
+            <Drawer
+                open={!!editing}
+                title={editing?.id ? 'Editar depoimento' : 'Novo depoimento'}
+                onClose={closeDrawer}
+                footer={
+                    <>
+                        <Button variant="secondary" onClick={closeDrawer}>
+                            Cancelar
+                        </Button>
+                        <Button onClick={submit} loading={saving}>
+                            {editing?.id ? 'Salvar e publicar' : 'Publicar depoimento'}
+                        </Button>
+                    </>
+                }
+            >
+                {editing && (
+                    <>
+                        <TextInput label="Nome do cliente" value={editing.draft.name} onChange={(v) => setDraft({ name: v })} placeholder="Ex.: Maria S." maxLength={40} />
+                        <TextArea label="Depoimento" value={editing.draft.text} onChange={(v) => setDraft({ text: v })} rows={5} maxLength={400} />
+                        <StarPicker value={editing.draft.rating} onChange={(v) => setDraft({ rating: v })} />
+                        <TextInput
+                            label="Quando ou onde"
+                            hint="Opcional. Ex.: Março de 2026, ou Avaliação no Google"
+                            value={editing.draft.date ?? ''}
+                            onChange={(v) => setDraft({ date: v })}
+                            maxLength={40}
+                        />
+                    </>
+                )}
+            </Drawer>
+
+            <SaveBar dirty={section.dirty} saving={section.saving} onSave={section.save} onDiscard={section.discard} />
+        </>
     );
 }

@@ -55,7 +55,7 @@ export default function Header() {
         };
     }, [mobileOpen]);
 
-    const phone = settings.phone || '(61) 9817-9760';
+    const phone = settings.phone;
 
     return (
         <header

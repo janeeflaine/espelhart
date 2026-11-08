@@ -6,27 +6,16 @@ import { useSettings } from '@/lib/SettingsContext';
 export default function About() {
     const settings = useSettings();
 
-    const stats =
-        settings.aboutStats && settings.aboutStats.length > 0
-            ? settings.aboutStats
-            : [
-                  { value: '10+', label: 'Anos de Mercado' },
-                  { value: '1500+', label: 'Obras Entregues' },
-                  { value: '5★', label: 'Avaliação Google' },
-              ];
-
-    const highlights =
-        settings.aboutHighlights && settings.aboutHighlights.length > 0
-            ? settings.aboutHighlights
-            : ['Certificação de Qualidade', 'Garantia em Todos os Serviços'];
+    const stats = settings.aboutStats.filter((s) => s.value || s.label);
+    const highlights = settings.aboutHighlights.filter(Boolean);
 
     return (
         <section id="sobre" className="bg-ink text-white py-16 sm:py-20 lg:py-28 overflow-hidden">
             <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8 grid lg:grid-cols-2 gap-12 lg:gap-20 items-center">
                 <div className="order-2 lg:order-1 relative">
                     <img
-                        src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?auto=format&fit=crop&w=1000&q=80"
-                        alt="Casa com esquadrias de alumínio e grandes vãos de vidro"
+                        src={settings.aboutImage}
+                        alt="Obra entregue pela Espelhart"
                         className="w-full aspect-[4/5] sm:aspect-[4/3] lg:aspect-[4/5] object-cover rounded-md"
                         loading="lazy"
                         width={1000}
@@ -38,7 +27,7 @@ export default function About() {
                 <div className="order-1 lg:order-2">
                     <p className="text-sm font-medium text-teal-light mb-4">Quem somos</p>
                     <h2 className="font-wide text-balance text-3xl sm:text-4xl lg:text-[2.6rem] font-bold leading-[1.1] whitespace-pre-line">
-                        {settings.aboutTitle || 'Expertise que atravessa gerações de transparência.'}
+                        {settings.aboutTitle}
                     </h2>
 
                     <div className="mt-6 space-y-4 text-[17px] leading-relaxed text-white/75 max-w-xl">
